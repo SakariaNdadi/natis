@@ -1,0 +1,12 @@
+.venv
+*.sqlite3
+*.log
+*.pot
+*.pyc
+__pycache__/
+
+media/
+staticfiles/
+data/
+*/migrations/[0-1000]*.py
+CACHE/
