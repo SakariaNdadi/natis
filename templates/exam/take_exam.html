@@ -1,0 +1,38 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<h1>{{ questionnaire.title }}</h1>
+<form method="post" id="exam-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div id="timer"></div>
+    <button type="submit" id="submit-button" class="btn btn-primary">Submit</button>
+</form>
+
+<script>
+    // Countdown Timer
+    let timeLeft = '{{ time_left.total_seconds|default: 3600 }}';
+    let timerElement = document.getElementById('timer');
+    let submitButton = document.getElementById('submit-button');
+    let form = document.getElementById('exam-form');
+
+    function updateTimer() {
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
+        timerElement.innerText = `Time left: ${minutes}m ${seconds}s`;
+
+        if (timeLeft <= 0) {
+            // Automatically submit when time runs out
+            timerElement.innerText = "Time is up! Submitting your exam.";
+            form.submit();  // Automatically submit the form
+            submitButton.disabled = true;  // Disable the submit button
+        } else {
+            timeLeft--;
+            setTimeout(updateTimer, 1000);  // Update every second
+        }
+    }
+
+    // Start the countdown when the page loads
+    updateTimer();
+</script>
+{% endblock %}
