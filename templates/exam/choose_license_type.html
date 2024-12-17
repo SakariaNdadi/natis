@@ -1,0 +1,12 @@
+{% extends '_base.html' %}
+
+{% block content %}
+
+<c-h1 title="Choose license type" />
+<br>
+<div>
+    {% for type in license_types %}
+    <a href="{% url 'exam:choose_questionnaire' type.id %}">{{ type }}</a>
+    {% endfor %}
+</div>
+{% endblock content %}

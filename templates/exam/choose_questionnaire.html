@@ -1,0 +1,12 @@
+{% extends '_base.html' %}
+
+{% block content %}
+
+<c-h1 title="Choose Questionnaire" />
+<br>
+<div>
+    {% for questionnaire in questionnaires %}
+    <a href="{% url 'exam:take_exam' questionnaire.id %}">{{ questionnaire }}</a>
+    {% endfor %}
+</div>
+{% endblock content %}

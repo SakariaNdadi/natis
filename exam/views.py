@@ -1,7 +1,9 @@
-from datetime import timedelta, timezone
+from datetime import timedelta
 
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
 
 from .forms import TakeExamForm
 from .models import Answer, ExamSession, LicenseType, Questionnaire
@@ -12,12 +14,14 @@ def index(request) -> HttpResponse:
     return render(request, template_name)
 
 
+@login_required
 def choose_license_type(request) -> HttpResponse:
     template_name = "exam/choose_license_type.html"
     context = {"license_types": LicenseType.objects.all()}
     return render(request, template_name, context)
 
 
+@login_required
 def choose_questionnaire(request, license_type_id) -> HttpResponse:
     template_name = "exam/choose_questionnaire.html"
     license_type = get_object_or_404(LicenseType, id=license_type_id)
@@ -28,15 +32,17 @@ def choose_questionnaire(request, license_type_id) -> HttpResponse:
     return render(request, template_name, context)
 
 
+@login_required
 def read_rules(request) -> HttpResponse:
     template_name = "exam/read_rules.html"
     return render(request, template_name)
 
 
+@login_required
 def take_exam(request, questionnaire_id) -> HttpResponse:
     template_name = "exam/take_exam.html"
     questionnaire = get_object_or_404(Questionnaire, id=questionnaire_id)
-    questions = questionnaire.question.all().prefetch_related("options")
+    questions = questionnaire.questions.all().prefetch_related("options")
 
     exam_session, created = ExamSession.objects.get_or_create(
         user=request.user, questionnaire=questionnaire, completed=False
@@ -60,23 +66,25 @@ def take_exam(request, questionnaire_id) -> HttpResponse:
     context = {
         "questionnaire": questionnaire,
         "form": form,
-        "time_left": time_left,
+        "time_left": time_left if time_left else timedelta(seconds=3600),
     }
     return render(request, template_name, context)
 
 
+@login_required
 def review_exam(request, questionnaire_id) -> HttpResponse:
     template_name = "exam/review_exam.html"
     questionnaire = get_object_or_404(Questionnaire, id=questionnaire_id)
     context = {
         "questionnaire": questionnaire,
         "answers": Answer.objects.filter(
-            question__in=questionnaire.question.all(), user=request.user
+            question__in=questionnaire.questions.all(), user=request.user
         ).select_related("question", "response"),
     }
     return render(request, template_name, context)
 
 
+@login_required
 def exam_result(request, questionnaire_id) -> HttpResponse:
     template_name = "exam/exam_result.html"
     questionnaire = get_object_or_404(Questionnaire, id=questionnaire_id)

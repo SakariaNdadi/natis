@@ -1,38 +1,56 @@
 {% extends "_base.html" %}
 
+{% block title %}{{ questionnaire.title }}{% endblock title %}
+
 {% block content %}
-<h1>{{ questionnaire.title }}</h1>
-<form method="post" id="exam-form">
+<c-h1 title="{{ questionnaire.title }}" />
+<form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <div id="timer"></div>
-    <button type="submit" id="submit-button" class="btn btn-primary">Submit</button>
+
+    {% for field in form %}
+    <div class="relative block overflow-hidden rounded-lg border border-gray-100 p-4 sm:p-6 lg:p-8">
+        <span class="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"></span>
+
+        <div class="sm:flex sm:justify-between sm:gap-4">
+            <div>
+                <h3 class="text-lg font-bold text-gray-900 sm:text-xl">
+                    {{ field.label_tag }}
+                </h3>
+            </div>
+        </div>
+
+        <div class="mt-4 capitalize">
+            <p class="text-pretty text-sm text-gray-500">
+                {{ field }}
+            </p>
+        </div>
+    </div>
+    <br>
+    {% endfor %}
+
+
+    <button type="submit" class="">Submit</button>
+    <!-- Base -->
+
+    <button type="submit"
+        class="inline-block rounded bg-indigo-600 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-500">
+        Download
+    </button>
+
+    <!-- Border -->
+
+    <button type="submit"
+        class="inline-block rounded border border-current px-8 py-3 text-sm font-medium text-indigo-600 transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:text-indigo-500">
+        Download
+    </button>
+
+    <button
+        class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
+        <span
+            class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+            Green to blue
+        </span>
+    </button>
 </form>
 
-<script>
-    // Countdown Timer
-    let timeLeft = '{{ time_left.total_seconds|default: 3600 }}';
-    let timerElement = document.getElementById('timer');
-    let submitButton = document.getElementById('submit-button');
-    let form = document.getElementById('exam-form');
-
-    function updateTimer() {
-        let minutes = Math.floor(timeLeft / 60);
-        let seconds = timeLeft % 60;
-        timerElement.innerText = `Time left: ${minutes}m ${seconds}s`;
-
-        if (timeLeft <= 0) {
-            // Automatically submit when time runs out
-            timerElement.innerText = "Time is up! Submitting your exam.";
-            form.submit();  // Automatically submit the form
-            submitButton.disabled = true;  // Disable the submit button
-        } else {
-            timeLeft--;
-            setTimeout(updateTimer, 1000);  // Update every second
-        }
-    }
-
-    // Start the countdown when the page loads
-    updateTimer();
-</script>
 {% endblock %}
