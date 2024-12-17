@@ -1,12 +1,34 @@
 {% extends '_base.html' %}
-
+{% block title %}Choose License Type{% endblock title %}
 {% block content %}
 
-<c-h1 title="Choose license type" />
+<div class="justify-self-center">
+    <c-h2 title="Choose license type" />
+</div>
 <br>
 <div>
     {% for type in license_types %}
-    <a href="{% url 'exam:choose_questionnaire' type.id %}">{{ type }}</a>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
+        <a href="{% url 'exam:choose_questionnaire' type.id %}"
+            class="relative block overflow-hidden rounded-lg border border-gray-100 p-4 sm:p-6 lg:p-8">
+            <span
+                class="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"></span>
+
+            <div class="sm:flex sm:justify-between sm:gap-4">
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900 sm:text-xl">
+                        {{ type }}
+                    </h3>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <p class="text-pretty text-sm text-gray-500">
+                    {{ type.description }}
+                </p>
+            </div>
+        </a>
+    </div>
     {% endfor %}
 </div>
 {% endblock content %}
