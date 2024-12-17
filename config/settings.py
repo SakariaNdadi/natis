@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     "simple_history",
     "compressor",
     "exam",
+    "allauth",
+    "allauth.account",
 ]
 
 MIDDLEWARE = [
@@ -56,6 +58,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_browser_reload.middleware.BrowserReloadMiddleware",  # django-browser-reload
     "simple_history.middleware.HistoryRequestMiddleware",  # django-simple-history
+    "allauth.account.middleware.AccountMiddleware",  # allauth
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -147,3 +150,9 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
