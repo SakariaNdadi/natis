@@ -6,18 +6,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock title %}</title>
-    {% compress css %}{% endcompress %}
+    {% compress css %}
+    {% block extracss %}{% endblock extracss %}
+    {% endcompress %}
     {% compress js %}
     <script src="{% static 'js/alpine.focus.js' %}"></script>
     <script src="{% static 'js/alpine.js' %}"></script>
     <script src="{% static 'js/htmx.js' %}"></script>
     <script src="{% static 'js/tailwind.js' %}"></script>
+    {% block extrajs %}{% endblock extrajs %}
     {% endcompress %}
 </head>
 
 <body>
     {% include 'includes/navbar.html' %}
     <main class="p-10">{% block content %}{% endblock content %}</main>
+
+    {% block scripts %}{% endblock scripts %}
+
     {% include 'includes/footer.html' %}
 </body>
 

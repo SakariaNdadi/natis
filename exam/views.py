@@ -8,12 +8,16 @@ from django.utils import timezone
 from .forms import TakeExamForm
 from .models import Answer, ExamSession, LicenseType, Questionnaire
 
+from collections import defaultdict
+from django.db.models import Avg
+
 
 @login_required
 def index(request) -> HttpResponse:
     template_name = "index.html"
     exams = ExamSession.objects.filter(user=request.user, completed=True)
     exams_data = []
+    questionnaire_scores = defaultdict(list)
 
     for exam in exams:
         start_time = exam.start_time
@@ -34,7 +38,18 @@ def index(request) -> HttpResponse:
             }
         )
 
-    context = {"exams_data": exams_data}
+        questionnaire_scores[exam.questionnaire.title].append(score_percentage)
+
+    avg_scores = {
+        questionnaire: sum(scores) / len(scores)
+        for questionnaire, scores in questionnaire_scores.items()
+    }
+
+    context = {
+        "exams_data": exams_data,
+        "avg_scores_labels": list(avg_scores.keys()),
+        "avg_scores_data": list(avg_scores.values()),
+    }
     return render(request, template_name, context)
 
 

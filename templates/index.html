@@ -1,8 +1,16 @@
 {% extends '_base.html' %}
+{% load static %}
 {% block title %}Testing{% endblock title %}
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'css/datatables.css' %}" />
+{% endblock extracss %}
+{% block extrajs %}
+<script src="{% static 'js/charts.js' %}"></script>
+<script src="{% static 'js/datatables.js' %}"></script>
+{% endblock extrajs %}
 {% block content %}
 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-    <div>
+    <div class="">
         <div
             class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Take Exam</h5>
@@ -20,11 +28,16 @@
         </div>
     </div>
     <div>
-        Stats
+        <div>
+            <canvas id="barChart"></canvas>
+        </div>
+        <!-- <div>
+            <canvas id="myChart"></canvas>
+        </div> -->
     </div>
     <div>
         <div class="relative overflow-x-auto">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <table id="example" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
@@ -32,6 +45,9 @@
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Exam
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Score
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Score
@@ -61,3 +77,36 @@
     </div>
 </div>
 {% endblock content %}
+{% block scripts %}
+<script>
+    const table1 = document.getElementById('myTable');
+    const ctx1 = document.getElementById('barChart');
+
+    new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: {{ avg_scores_labels| safe }},
+        datasets: [{
+            label: 'Average',
+            data: {{ avg_scores_data| safe }},
+        backgroundColor: [
+            'rgb(255, 99, 132)',
+            'rgb(75, 192, 192)',
+            'rgb(255, 205, 86)',
+            'rgb(201, 203, 207)',
+            'rgb(54, 162, 235)'
+        ]
+        }]
+        },
+        options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+    });
+
+    new DataTable(table1);
+</script>
+{% endblock scripts %}
