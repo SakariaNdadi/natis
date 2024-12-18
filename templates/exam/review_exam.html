@@ -3,7 +3,7 @@
 {% block title %}{{ questionnaire.title }}{% endblock title %}
 
 {% block content %}
-<c-h1 title="{{ questionnaire.title }}" />
+<c-h2 title="{{ questionnaire.title }}" />
 <form method="post">
     {% csrf_token %}
 
@@ -17,12 +17,6 @@
                     <th scope="col" class="px-6 py-3">
                         Answer
                     </th>
-                    <th scope="col" class="px-6 py-3">
-                        Category
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Price
-                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -34,12 +28,6 @@
                     <td class="px-6 py-4">
                         {{ answer.response }}
                     </td>
-                    <td class="px-6 py-4">
-                        Laptop
-                    </td>
-                    <td class="px-6 py-4">
-                        $2999
-                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -49,7 +37,7 @@
 
     <button type="submit"
         class="inline-block rounded bg-indigo-600 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-500">
-        Download
+        Submit
     </button>
 
 </form>

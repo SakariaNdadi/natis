@@ -14,6 +14,6 @@ urlpatterns = [
     ),
     path("read-rules/", views.read_rules, name="read_rules"),
     path("exam/<int:questionnaire_id>/take/", views.take_exam, name="take_exam"),
-    path("exam/<int:questionnaire_id>/review/", views.review_exam, name="review_exam"),
-    path("exam/<int:questionnaire_id>/result/", views.exam_result, name="exam_result"),
+    path("exam/<int:exam_session_id>/review/", views.review_exam, name="review_exam"),
+    path("exam/<int:exam_session_id>/result/", views.exam_result, name="exam_result"),
 ]

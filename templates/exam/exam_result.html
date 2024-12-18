@@ -1,0 +1,41 @@
+{% extends "_base.html" %}
+
+{% block title %}Exam Results{% endblock title %}
+{% block content %}
+<c-h2 title="Review Exam: {{ questionnaire.title }}" />
+
+<div class="grid grid-cols-1 md:grid-cols-3">
+    <div class="border border-neutral-700 text-center">Total Questions: {{ total_questions }}</div>
+    <div class="border border-neutral-700 text-center">Correct: {{ correct_count }}</div>
+    <div class="border border-neutral-700 text-center">Percentage: {{ score_percentage }}%</div>
+</div>
+
+<br>
+
+<table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+    <thead class="text-lg text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <tr>
+            <th scope="col" class="px-6 py-3">Question</th>
+            <th scope="col" class="px-6 py-3">Your Answer</th>
+            <th scope="col" class="px-6 py-3">Correct Answer</th>
+            <th scope="col" class="px-6 py-3">Correct?</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for answer in answers %}
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <td class="px-6 py-4">{{ answer.question.question }}</td>
+            <td class="px-6 py-4">{{ answer.response.text }}</td>
+            <td class="px-6 py-4">{{ answer.question.answer.text }}</td>
+            <td class="px-6 py-4">
+                {% if answer.is_correct %}
+                ✅
+                {% else %}
+                ❌
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

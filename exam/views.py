@@ -9,9 +9,33 @@ from .forms import TakeExamForm
 from .models import Answer, ExamSession, LicenseType, Questionnaire
 
 
+@login_required
 def index(request) -> HttpResponse:
     template_name = "index.html"
-    return render(request, template_name)
+    exams = ExamSession.objects.filter(user=request.user, completed=True)
+    exams_data = []
+
+    for exam in exams:
+        start_time = exam.start_time
+        correct_count = exam.answers.filter(is_correct=True).count()
+        total_questions = exam.questionnaire.questions.count()
+        score_percentage = (
+            (correct_count / total_questions) * 100 if total_questions > 0 else 0
+        )
+
+        exams_data.append(
+            {
+                "exam": exam,
+                "questionnaire": exam.questionnaire,
+                "correct_count": correct_count,
+                "total_questions": total_questions,
+                "score_percentage": score_percentage,
+                "start_time": start_time,
+            }
+        )
+
+    context = {"exams_data": exams_data}
+    return render(request, template_name, context)
 
 
 @login_required
@@ -25,10 +49,22 @@ def choose_license_type(request) -> HttpResponse:
 def choose_questionnaire(request, license_type_id) -> HttpResponse:
     template_name = "exam/choose_questionnaire.html"
     license_type = get_object_or_404(LicenseType, id=license_type_id)
+    ongoing_sessions = ExamSession.objects.filter(
+        user=request.user, completed=False
+    ).values_list("questionnaire_id", flat=True)
+
     context = {
         "license_type": license_type,
         "questionnaires": license_type.questionnaires.all(),
+        "ongoing_sessions": ongoing_sessions,
     }
+
+    # Redirect to ongoing session if selected
+    if request.method == "POST":
+        questionnaire_id = request.POST.get("questionnaire_id")
+        if int(questionnaire_id) in ongoing_sessions:
+            return redirect("exam:take_exam", questionnaire_id=questionnaire_id)
+
     return render(request, template_name, context)
 
 
@@ -44,57 +80,74 @@ def take_exam(request, questionnaire_id) -> HttpResponse:
     questionnaire = get_object_or_404(Questionnaire, id=questionnaire_id)
     questions = questionnaire.questions.all().prefetch_related("options")
 
+    # Create a new or get the existing session
     exam_session, created = ExamSession.objects.get_or_create(
         user=request.user, questionnaire=questionnaire, completed=False
     )
 
+    # Redirect if time is up
     if exam_session.is_time_up():
-        return redirect("exam:review_exam", questionnaire_id=questionnaire.id)
+        exam_session.completed = True
+        exam_session.save()
+        return redirect("exam:review_exam", exam_session_id=exam_session.id)
 
     if request.method == "POST":
         form = TakeExamForm(questions, request.POST)
         if form.is_valid():
-            form.save(user=request.user, questionnaire=questionnaire)
-            exam_session.completed = True
+            form.save(session=exam_session)
+            # exam_session.completed = True
             exam_session.save()
-            return redirect("exam:review_exam", questionnaire_id=questionnaire.id)
+            return redirect("exam:review_exam", exam_session_id=exam_session.id)
     else:
         form = TakeExamForm(questions)
 
-    time_left = (exam_session.start_time + timedelta(minutes=60)) - timezone.now()
+    time_left = max(
+        (exam_session.start_time + timedelta(minutes=60)) - timezone.now(),
+        timedelta(0),
+    )
 
     context = {
         "questionnaire": questionnaire,
         "form": form,
-        "time_left": time_left if time_left else timedelta(seconds=3600),
+        "time_left": time_left,
     }
     return render(request, template_name, context)
 
 
 @login_required
-def review_exam(request, questionnaire_id) -> HttpResponse:
+def review_exam(request, exam_session_id) -> HttpResponse:
     template_name = "exam/review_exam.html"
-    questionnaire = get_object_or_404(Questionnaire, id=questionnaire_id)
+    exam_session = get_object_or_404(ExamSession, id=exam_session_id)
+
+    # Redirect to the result page if the exam is already completed
+    if exam_session.completed:
+        return redirect("exam:exam_result", exam_session_id=exam_session.id)
+
+    if request.method == "POST":
+        # Mark the session as completed when submitted
+        exam_session.completed = True
+        exam_session.end_time = timezone.now()
+        exam_session.save()
+        return redirect("exam:exam_result", exam_session_id=exam_session.id)
+
     context = {
-        "questionnaire": questionnaire,
-        "answers": Answer.objects.filter(
-            question__in=questionnaire.questions.all(), user=request.user
-        ).select_related("question", "response"),
+        "questionnaire": exam_session.questionnaire,
+        "answers": exam_session.answers.select_related("question", "response"),
     }
     return render(request, template_name, context)
 
 
 @login_required
-def exam_result(request, questionnaire_id) -> HttpResponse:
+def exam_result(request, exam_session_id) -> HttpResponse:
     template_name = "exam/exam_result.html"
-    questionnaire = get_object_or_404(Questionnaire, id=questionnaire_id)
-    user_answers = Answer.objects.filter(
-        question__in=questionnaire.question.all(), user=request.user
-    )
+    exam_session = get_object_or_404(ExamSession, id=exam_session_id)
+    user_answers = exam_session.answers.all()
     correct_count = user_answers.filter(is_correct=True).count()
-    total_questions = questionnaire.question.count()
+    total_questions = exam_session.questionnaire.questions.count()
+
     context = {
-        "questionnaire": questionnaire,
+        "answers": user_answers,
+        "questionnaire": exam_session.questionnaire,
         "correct_count": correct_count,
         "total_questions": total_questions,
         "score_percentage": (correct_count / total_questions) * 100,

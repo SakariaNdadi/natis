@@ -1,7 +1,7 @@
 {% extends '_base.html' %}
 {% block title %}Testing{% endblock title %}
 {% block content %}
-<div class="grid grid-cols-2">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
     <div>
         <div
             class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -19,7 +19,45 @@
             </a>
         </div>
     </div>
-    <div>Something</div>
-    <div>Stats</div>
+    <div>
+        Stats
+    </div>
+    <div>
+        <div class="relative overflow-x-auto">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            Session
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Exam
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Score
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for exam_data in exams_data %}
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ exam_data.start_time }}
+                        </th>
+                        <td class="px-6 py-4">
+                            {{ exam_data.questionnaire }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ exam_data.score_percentage }}
+                        </td>
+                        <td class="px-6 py-4">
+                            <a href="{% url 'exam:exam_result' exam_data.exam.id %}">View</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 {% endblock content %}

@@ -84,8 +84,8 @@ class Question(models.Model):
 
 
 class Answer(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="answers", db_index=True
+    session = models.ForeignKey(
+        "ExamSession", on_delete=models.CASCADE, related_name="answers"
     )
     question = models.ForeignKey(
         Question, on_delete=models.PROTECT, related_name="answers"
@@ -98,7 +98,7 @@ class Answer(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
-        return f"Answer by {self.user}: {self.response}"
+        return f"Answer for {self.session} - {self.question}: {self.response}"
 
     def save(self, *args, **kwargs) -> None:
         self.is_correct = self.response == self.question.answer
@@ -106,13 +106,23 @@ class Answer(models.Model):
 
 
 class ExamSession(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    questionnaire = models.ForeignKey(Questionnaire, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="exam_sessions"
+    )
+    questionnaire = models.ForeignKey(
+        Questionnaire, on_delete=models.CASCADE, related_name="sessions"
+    )
     start_time = models.DateTimeField(auto_now_add=True)
     completed = models.BooleanField(default=False)
+    end_time = models.DateTimeField(null=True, blank=True)
 
     def is_time_up(self):
-        return (self.start_time + timedelta(minutes=60)) < timezone.now()
+        return timezone.now() > self.start_time + timedelta(minutes=60)
+
+    def mark_completed(self):
+        self.completed = True
+        self.end_time = timezone.now()
+        self.save()
 
     def __str__(self):
         return f"Exam session for {self.user} on {self.questionnaire.title}"
