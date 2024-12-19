@@ -83,6 +83,7 @@ class Option(models.Model):
 
 class Question(models.Model):
     question = models.CharField(max_length=255, unique=True)
+    image = models.ImageField(upload_to="question", blank=True, null=True)
     section = models.CharField(max_length=20, choices=Section.choices)
     options = models.ManyToManyField(Option)
     answer = models.ForeignKey(
