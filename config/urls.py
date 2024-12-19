@@ -21,6 +21,7 @@ from django.urls import include, path
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
+    path("account/", include("accounts.urls")),
     path("__reload__/", include("django_browser_reload.urls")),
     path("exam/", include("exam.urls", namespace="exam")),
     path("", include("pages.urls", namespace="pages")),

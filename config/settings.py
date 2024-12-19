@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django_cotton",
     "simple_history",
     "compressor",
+    "accounts",
     "exam",
     "pages",
     "allauth",
