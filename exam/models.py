@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models, transaction
 from django.utils import timezone
+from simple_history.models import HistoricalRecords
 
 
 class Section(models.TextChoices):
@@ -28,6 +29,7 @@ class Questionnaire(models.Model):
         LicenseType, on_delete=models.CASCADE, related_name="questionnaires"
     )
     questions = models.ManyToManyField("Question", related_name="questionnaires")
+    history = HistoricalRecords()
 
     def __str__(self) -> str:
         return self.title
@@ -52,6 +54,7 @@ class Questionnaire(models.Model):
 class Option(models.Model):
     text = models.CharField(max_length=255, blank=True, null=True)
     image = models.ImageField(upload_to="options/", blank=True, null=True)
+    history = HistoricalRecords()
 
     def __str__(self) -> str:
         return self.text or "Option Image"
@@ -60,8 +63,19 @@ class Option(models.Model):
         if not self.text and not self.image:
             raise ValidationError("Option must have either text or an image.")
 
+    def get_related_question(self):
+        """Helper method to find the related question for this option."""
+        related_question = Question.objects.filter(options=self).first()
+        return related_question
+
     def save(self, *args, **kwargs) -> None:
-        if self.text:
+        if self.image and not self.text:
+            # Automatically generate text for image-only options
+            question = self.get_related_question()
+            if question:
+                option_count = question.options.count() + 1
+                self.text = f"Option {option_count}"
+        elif self.text:
             self.text = self.text.lower()
         self.clean()
         super().save(*args, **kwargs)
@@ -74,6 +88,7 @@ class Question(models.Model):
     answer = models.ForeignKey(
         "Option", on_delete=models.PROTECT, related_name="correct_for_questions"
     )
+    history = HistoricalRecords()
 
     def __str__(self) -> str:
         return self.question
@@ -96,6 +111,7 @@ class Answer(models.Model):
     is_correct = models.BooleanField(default=False, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    history = HistoricalRecords()
 
     def __str__(self) -> str:
         return f"Answer for {self.session} - {self.question}: {self.response}"
@@ -115,6 +131,7 @@ class ExamSession(models.Model):
     start_time = models.DateTimeField(auto_now_add=True)
     completed = models.BooleanField(default=False)
     end_time = models.DateTimeField(null=True, blank=True)
+    history = HistoricalRecords()
 
     def is_time_up(self):
         return timezone.now() > self.start_time + timedelta(minutes=60)

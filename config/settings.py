@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "simple_history",
     "compressor",
     "exam",
+    "pages",
     "allauth",
     "allauth.account",
     "crispy_forms",
@@ -163,7 +164,7 @@ LOGIN_REDIRECT_URL = "exam:index"
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "none"
-ACCOUNT_LOGOUT_REDIRECT_URL = "exam:index"
+ACCOUNT_LOGOUT_REDIRECT_URL = "pages:index"
 # ACCOUNT_SIGNUP_FORM_HONEYPOT_FIELD = ""
 
 

@@ -1,15 +1,14 @@
+from collections import defaultdict
 from datetime import timedelta
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Avg
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
 from .forms import TakeExamForm
 from .models import Answer, ExamSession, LicenseType, Questionnaire
-
-from collections import defaultdict
-from django.db.models import Avg
 
 
 @login_required
