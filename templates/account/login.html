@@ -2,9 +2,9 @@
 {% load tailwind_filters %}
 {% block title %}Login{% endblock title %}
 {% block content %}
-<form method="post" action="{% url 'account_login' %}">
+<form method="post" action="{% url 'account_login' %}" class="dark:text-gray-300">
     {% csrf_token %}
     {{ form|crispy }}
-    <c-button label="YES" type="submit" />
+    <c-button label="LOGIN" type="submit" />
 </form>
 {% endblock content %}

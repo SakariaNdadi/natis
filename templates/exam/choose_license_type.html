@@ -10,13 +10,13 @@
     {% for type in license_types %}
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
         <a href="{% url 'exam:choose_questionnaire' type.id %}"
-            class="relative block overflow-hidden rounded-lg border border-gray-300 hover:shadow-xl hover:shadow-gray-300 p-4 sm:p-6 lg:p-8">
+            class="relative block overflow-hidden rounded-lg border border-gray-300 hover:shadow-xl hover:shadow-gray-300 dark:hover:shadow-gray-500 p-4 sm:p-6 lg:p-8">
             <span
                 class="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-gray-500 via-amber-500 to-yellow-600"></span>
 
             <div class="sm:flex sm:justify-between sm:gap-4">
                 <div>
-                    <h3 class="text-lg font-bold text-gray-900 sm:text-xl">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-gray-400 sm:text-xl">
                         {{ type }}
                     </h3>
                 </div>
