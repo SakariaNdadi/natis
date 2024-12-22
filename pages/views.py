@@ -19,3 +19,8 @@ def privacy(request):
 def license(request):
     template_name = "pages/license.html"
     return render(request, template_name)
+
+
+def changelog(request):
+    template_name = "pages/changelog.html"
+    return render(request, template_name)

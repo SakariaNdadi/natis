@@ -14,8 +14,8 @@
     <div class="">
         <div
             class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-400">Take Exam</h5>
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Test yourself by choose one of the current mock
+            <h5 class="mb-2 text-2xl font-bold tracking-tight ">Take Exam</h5>
+            <p class="mb-3 font-normal">Test yourself by choose one of the current mock
                 exam papers available.</p>
             <a href="{% url 'exam:choose_license_type' %}"
                 class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-yellow-600 rounded-lg hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-neutral-300 dark:bg-neutral-600 dark:hover:bg-neutral-700 dark:focus:ring-neutral-800">
@@ -42,8 +42,8 @@
     {#{% if exam_data %}#}
     <div class="">
         <div class="">
-            <table id="example" class="text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <table id="example" class="text-sm text-left">
+                <thead class="text-xs uppercase bg-gray-50 dark:bg-gray-700 ">
                     <tr>
                         <th scope="col" class="px-6 py-3">
                             Session
@@ -62,8 +62,7 @@
                 <tbody>
                     {% for exam_data in exams_data %}
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <th scope="row"
-                            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray-400">
+                        <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap ">
                             {{ exam_data.start_time }}
                         </th>
                         <td class="px-6 py-4">

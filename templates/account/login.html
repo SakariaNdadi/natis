@@ -2,7 +2,7 @@
 {% load tailwind_filters %}
 {% block title %}Login{% endblock title %}
 {% block content %}
-<form method="post" action="{% url 'account_login' %}" class="dark:text-gray-300">
+<form method="post" action="{% url 'account_login' %}">
     {% csrf_token %}
     {{ form|crispy }}
     <c-button label="LOGIN" type="submit" />
