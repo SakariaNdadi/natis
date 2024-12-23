@@ -1,8 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 
 def index(request):
     template_name = "pages/index.html"
+
+    if request.user.is_authenticated:
+        return redirect("exam:index")
     return render(request, template_name)
 
 
