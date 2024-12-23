@@ -1,41 +1,73 @@
 {% extends "_base.html" %}
-
+{% load static %}
 {% block title %}Exam Results{% endblock title %}
+
+
+{% block extracss %}
+    <link rel="stylesheet" href="{% static 'css/datatables.css' %}" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+{% endblock extracss %}
+
+
+{% block extrajs %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+{% endblock extrajs %}
+
 {% block content %}
-<c-h2 title="Review Exam: {{ questionnaire.title }}" />
+    <c-h2 title="Review Exam: {{ questionnaire.title }}" />
 
-<div class="grid grid-cols-1 md:grid-cols-3">
-    <div class="border border-neutral-700 text-center">Total Questions: {{ total_questions }}</div>
-    <div class="border border-neutral-700 text-center">Correct: {{ correct_count }}</div>
-    <div class="border border-neutral-700 text-center">Percentage: {{ score_percentage }}%</div>
-</div>
+    <div class="grid grid-cols-1 md:grid-cols-3">
+        <div class="border border-neutral-700 text-center">Total Questions: {{ total_questions }}</div>
+        <div class="border border-neutral-700 text-center">Correct: {{ correct_count }}</div>
+        <div class="border border-neutral-700 text-center">Percentage: {{ score_percentage }}%</div>
+    </div>
 
-<br>
+    <br>
 
-<table class="w-full text-sm text-left rtl:text-right">
-    <thead class="text-lg uppercase bg-gray-200 dark:bg-gray-700">
-        <tr>
-            <th scope="col" class="px-6 py-3">Question</th>
-            <th scope="col" class="px-6 py-3">Your Answer</th>
-            <th scope="col" class="px-6 py-3">Correct Answer</th>
-            <th scope="col" class="px-6 py-3">Correct?</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for answer in answers %}
-        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <td class="px-6 py-4">{{ answer.question.question }}</td>
-            <td class="px-6 py-4">{{ answer.response.text }}</td>
-            <td class="px-6 py-4">{{ answer.question.answer.text }}</td>
-            <td class="px-6 py-4">
-                {% if answer.is_correct %}
-                ✅
-                {% else %}
-                ❌
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <table id="myTable" class="w-full text-sm text-left rtl:text-right">
+        <thead class="text-lg uppercase bg-yellow-500 dark:bg-gray-700 text-white">
+            <tr>
+                <th scope="col" class="px-6 py-3">Question</th>
+                <th scope="col" class="px-6 py-3">Your Answer</th>
+                <th scope="col" class="px-6 py-3">Correct Answer</th>
+                <th scope="col" class="px-6 py-3">Correct?</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for answer in answers %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <td class="px-6 py-4">{{ answer.question.question }}</td>
+                    <td class="px-6 py-4">{{ answer.response.text }}</td>
+                    <td class="px-6 py-4">{{ answer.question.answer.text }}</td>
+                    <td class="px-6 py-4">
+                        {% if answer.is_correct %}
+                            ✅
+                        {% else %}
+                            ❌
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
+
+
+{% block scripts %}
+    <script>
+        let table = new DataTable('#myTable', {
+            searching: true,
+            pageLength: 10,
+            lengthChange: false,
+
+            columnDefs: [
+                {
+                    target: 3,
+                    sortable: false,
+                    searchable: false
+                },
+            ]
+        });
+    </script>
+{% endblock scripts %}

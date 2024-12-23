@@ -2,29 +2,29 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock title %}</title>
-    {% compress css %}
-    {% block extracss %}{% endblock extracss %}
-    {% endcompress %}
-    {% compress js %}
-    <script src="{% static 'js/alpine.focus.js' %}"></script>
-    <script src="{% static 'js/alpine.js' %}"></script>
-    <script src="{% static 'js/htmx.js' %}"></script>
-    <script src="{% static 'js/tailwind.js' %}"></script>
-    {% block extrajs %}{% endblock extrajs %}
-    {% endcompress %}
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}{% endblock title %}</title>
+        {% compress css %}
+            {% block extracss %}{% endblock extracss %}
+        {% endcompress %}
+        {% compress js %}
+            <script src="{% static 'js/alpine.focus.js' %}"></script>
+            <script src="{% static 'js/alpine.js' %}"></script>
+            <script src="{% static 'js/htmx.js' %}"></script>
+            <script src="{% static 'js/tailwind.js' %}"></script>
+            {% block extrajs %}{% endblock extrajs %}
+        {% endcompress %}
+    </head>
 
-<body class="bg-white dark:bg-gray-800 text-sm md:text-base dark:text-gray-400">
-    {% include 'includes/navbar.html' %}
-    <main class="p-10">{% block content %}{% endblock content %}</main>
+    <body class="bg-white dark:bg-gray-800 text-sm md:text-base dark:text-gray-400">
+        {% include 'includes/navbar.html' %}
+        <main class="p-10">{% block content %}{% endblock content %}</main>
 
-    {% block scripts %}{% endblock scripts %}
+        {% block scripts %}{% endblock scripts %}
 
-    {% include 'includes/footer.html' %}
-</body>
+        {% include 'includes/footer.html' %}
+    </body>
 
 </html>

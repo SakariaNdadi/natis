@@ -2,9 +2,9 @@
 {% load tailwind_filters %}
 {% block title %}Sign Up{% endblock title %}
 {% block content %}
-<form method="post" action="{% url 'account_signup' %}">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <c-button label="Create Account" type="submit" />
-</form>
+    <form method="post" action="{% url 'account_signup' %}">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <c-button label="Create Account" type="submit" />
+    </form>
 {% endblock content %}

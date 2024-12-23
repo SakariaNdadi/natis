@@ -2,9 +2,9 @@
 {% load tailwind_filters %}
 {% block title %}Logout{% endblock title %}
 {% block content %}
-<form method="post" action="{% url 'account_logout' %}">
-    {% csrf_token %}
-    <p>Are you sure you want to logout?</p>
-    <c-button label="YES" type="submit" />
-</form>
+    <form method="post" action="{% url 'account_logout' %}">
+        {% csrf_token %}
+        <p>Are you sure you want to logout?</p>
+        <c-button label="YES" type="submit" />
+    </form>
 {% endblock content %}

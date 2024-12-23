@@ -3,40 +3,40 @@
 {% block title %}{{ questionnaire.title }}{% endblock title %}
 
 {% block content %}
-<c-h2 title="{{ questionnaire.title }}" />
-<form method="post">
-    {% csrf_token %}
+    <c-h2 title="{{ questionnaire.title }}" />
+    <form method="post">
+        {% csrf_token %}
 
-    <div class="relative overflow-x-auto">
-        <table class="w-full text-sm text-left rtl:text-right">
-            <thead class="text-xs uppercase bg-gray-50 dark:bg-gray-700">
-                <tr>
-                    <th scope="col" class="px-6 py-3">
-                        Question
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Answer
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for answer in answers %}
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
-                        {{ answer.question }}
-                    </th>
-                    <td class="px-6 py-4">
-                        {{ answer.response }}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+        <div class="relative overflow-x-auto">
+            <table class="w-full text-sm text-left rtl:text-right">
+                <thead class="text-xs uppercase bg-gray-50 dark:bg-gray-700">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            Question
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Answer
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for answer in answers %}
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
+                                {{ answer.question }}
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ answer.response }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
 
-    <c-button type="submit" label="Submit" />
+        <c-button type="submit" label="Submit" />
 
-</form>
+    </form>
 
 {% endblock %}
