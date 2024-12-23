@@ -8,6 +8,7 @@ django-compressor==4.5.1
 django-cotton==1.5.1
 django-crispy-forms==2.3
 django-simple-history==3.7.0
+djhtml==3.0.7
 pillow==11.0.0
 rcssmin==1.1.2
 rjsmin==1.2.2
