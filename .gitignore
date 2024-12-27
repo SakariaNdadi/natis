@@ -10,3 +10,5 @@ staticfiles/
 data/
 */migrations/[0-1000]*.py
 CACHE/
+
+.env

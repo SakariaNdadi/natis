@@ -29,25 +29,49 @@ class Questionnaire(models.Model):
         LicenseType, on_delete=models.CASCADE, related_name="questionnaires"
     )
     questions = models.ManyToManyField("Question", related_name="questionnaires")
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="generated_questionnaires",
+    )
     history = HistoricalRecords()
 
     def __str__(self) -> str:
         return self.title
 
-    def clean(self) -> None:
-        super().clean()
-        for question in self.questions.all():
-            option_count = question.options.count()
-            if option_count != 4:
+    def save(self, *args, **kwargs) -> None:
+        if self.user:
+            # Check if the user has already generated 4 questionnaires
+            if Questionnaire.objects.filter(user=self.user).count() > 5:
                 raise ValidationError(
-                    f"The question '{question}' must have exactly 4 options."
+                    "You can only generate a maximum of 4 questionnaires."
                 )
 
-    def save(self, *args, **kwargs) -> None:
         with transaction.atomic():
-            self.clean()
+            # Make title lowercase before saving
             if self.title:
                 self.title = self.title.lower()
+
+            # Ensure the title is unique, appending incremented number if necessary
+            base_title = self.title
+            increment = 0
+
+            # Check if the title already exists (excluding the current instance if updating)
+            while Questionnaire.objects.filter(title=self.title).exists():
+                increment += 1
+                self.title = f"{base_title}-{increment}"
+
+            # Validate questions and options (if already assigned)
+            if self.pk:  # Validate only if the instance has been saved before
+                for question in self.questions.all():
+                    option_count = question.options.count()
+                    if option_count != 4:
+                        raise ValidationError(
+                            f"The question '{question}' must have exactly 4 options."
+                        )
+
             super().save(*args, **kwargs)
 
 

@@ -1,6 +1,8 @@
+import random
 from collections import defaultdict
 from datetime import timedelta
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
 from django.http import HttpResponse
@@ -8,7 +10,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
 from .forms import TakeExamForm
-from .models import Answer, ExamSession, LicenseType, Questionnaire
+from .models import Answer, ExamSession, LicenseType, Question, Questionnaire
 
 
 @login_required
@@ -66,18 +68,56 @@ def choose_questionnaire(request, license_type_id) -> HttpResponse:
     ongoing_sessions = ExamSession.objects.filter(
         user=request.user, completed=False
     ).values_list("questionnaire_id", flat=True)
+    user_questionnaires = license_type.questionnaires.filter(user=request.user)
 
     context = {
         "license_type": license_type,
-        "questionnaires": license_type.questionnaires.all(),
+        "questionnaires": license_type.questionnaires.filter(user__isnull=True),
+        "user_questionnaires": user_questionnaires,
         "ongoing_sessions": ongoing_sessions,
     }
 
-    # Redirect to ongoing session if selected
     if request.method == "POST":
+        # Handle redirect to ongoing session
         questionnaire_id = request.POST.get("questionnaire_id")
-        if int(questionnaire_id) in ongoing_sessions:
+        if questionnaire_id and int(questionnaire_id) in ongoing_sessions:
             return redirect("exam:take_exam", questionnaire_id=questionnaire_id)
+
+        # Handle random questionnaire generation
+        if "generate_random" in request.POST:
+            title = request.POST.get("title", "").strip()
+            if not title:
+                messages.error(request, "Please provide a title for the questionnaire.")
+            else:
+                # Fetch all questions related to the license type
+                questions = Question.objects.filter(
+                    questionnaires__license_type=license_type
+                )
+                if not questions.exists():
+                    messages.error(
+                        request, "No questions available for this license type."
+                    )
+                    return redirect(
+                        "exam:choose_questionnaire", license_type_id=license_type.id
+                    )
+
+                # Pick a random question
+                random_question = random.choice(questions)
+
+                # Create the questionnaire and associate it with the user
+                questionnaire = Questionnaire.objects.create(
+                    title=title.lower(), license_type=license_type, user=request.user
+                )
+                questionnaire.questions.add(random_question)
+                questionnaire.save()
+
+                messages.success(
+                    request,
+                    f"Random questionnaire '{questionnaire.title}' has been generated successfully!",
+                )
+                return redirect(
+                    "exam:choose_questionnaire", license_type_id=license_type.id
+                )
 
     return render(request, template_name, context)
 

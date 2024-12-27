@@ -3,14 +3,76 @@
 {% block title %}Choose Questionnaire{% endblock title %}
 {% block content %}
 
-    <c-h2 title="Choose Questionnaire" />
+    <div class="grid grid-cols-1 md:grid-cols-2" x-data="{modalIsOpen: false}">
+        <c-h2 title="Choose Questionnaire" />
+        <div class="block">
+            <button type="button" @click="modalIsOpen = true" {% if user_questionnaires|length >= 4 %}disabled{% endif %}
+                    class="group inline-block rounded-full bg-gradient-to-r from-yellow-500 via-yellow-700 to-sky-950 p-[2px] hover:text-white active:text-opacity-75">
+                <span class="block rounded-full bg-white px-8 py-3 text-sm font-medium group-hover:bg-transparent">
+                    Generate Random Questionnaire
+                </span>
+            </button>
+
+            <div x-cloak x-show="modalIsOpen" x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalIsOpen"
+                 @keydown.esc.window="modalIsOpen = false" @click.self="modalIsOpen = false"
+                 class="fixed inset-0 z-30 flex items-end justify-center bg-black/20 p-4 pb-8 backdrop-blur-md sm:items-center lg:p-8"
+                 role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
+            <!-- Modal Dialog -->
+                <div x-show="modalIsOpen"
+                     x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity"
+                     x-transition:enter-start="opacity-0 scale-50" x-transition:enter-end="opacity-100 scale-100"
+                     class="flex max-w-lg flex-col gap-4 overflow-hidden rounded-md border border-neutral-300 bg-white text-neutral-600 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300">
+                <!-- Dialog Header -->
+                    <div
+                        class="flex items-center justify-between border-b border-neutral-300 bg-neutral-50/60 p-4 dark:border-neutral-700 dark:bg-neutral-950/20">
+                        <h3 id="defaultModalTitle" class="font-semibold tracking-wide text-neutral-900 dark:text-white">
+                            Generate Questionnaire</h3>
+                        <button @click="modalIsOpen = false" aria-label="close modal">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"
+                                 stroke="currentColor" fill="none" stroke-width="1.4" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <form method="post">
+                        {% csrf_token %}
+                    <!-- Dialog Body -->
+                        <div class="p-4">
+                            <p class="text-sm"> <span class="text-red-500 font-bold">Note:</span> You are only permitted to
+                                generate a maximum of 4 questionnaires.</p>
+                            <br>
+                            <label for="title">Title</label>
+                            <input type="text" name="title" class="border border-sky-950">
+                        </div>
+                    <!-- Dialog Footer -->
+                        <div
+                            class="flex justify-between border-t border-neutral-300 bg-neutral-50/60 p-4 dark:border-neutral-700 dark:bg-neutral-950/20 sm:flex-row sm:items-center">
+                            <c-button type="submit" label="Generate" name="generate_random" @click="modalIsOpen = false" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <br>
-    <div>
+    <div class="grid grid-cols-1 md:grid-cols-3">
         {% for questionnaire in questionnaires %}
             <a href="{% url 'exam:take_exam' questionnaire.id %}"
-               class="py-2.5 px-5 me-2 mb-2 text-sm font-medium focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-gray-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">{{ questionnaire }}</a>
+               class="py-2.5 px-5 me-2 mb-2 text-sm font-medium focus:outline-none bg-white rounded-lg border border-sky-950 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 capitalize">{{ questionnaire }}</a>
         {% endfor %}
     </div>
+
+    <br>
+
+    {% if user_questionnaires %}
+        <c-h2 title="My random questionnaire" />
+        <div class="grid grid-cols-1 md:grid-cols-2">
+            {% for questionnaire in user_questionnaires %}
+                <a href="{% url 'exam:take_exam' questionnaire.id %}"
+                   class="py-2.5 px-5 me-2 mb-2 text-sm font-medium focus:outline-none bg-white rounded-lg border border-sky-950 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 capitalize">{{ questionnaire }}</a>
+            {% endfor %}
+        </div>
+    {% endif %}
 
 
 {% endblock content %}

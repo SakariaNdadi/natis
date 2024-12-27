@@ -1,10 +1,13 @@
+{% load static %}
 <footer class="fixed -bottom-4 bg-white m-4 dark:bg-gray-800 w-screen">
     <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
-        <!-- <span class="text-sm sm:text-center">© 2023 <a href="https://flowbite.com/"
-                class="hover:underline">Flowbite™</a>. All Rights Reserved.
-        </span> -->
-        <span class="text-sm sm:text-center">© 2024. All Rights Reserved.
+
+        <span class="text-sm sm:text-center">© 2024 <a href="https://sakariandadi.com/"
+                                                       class="hover:underline text-sky-950">Sakaria
+            Ndadi</a>. All Rights Reserved.
         </span>
+        <!-- <span class="text-sm sm:text-center">© 2024. All Rights Reserved.
+        </span> -->
         <ul class="flex flex-wrap items-center mt-3 text-sm font-medium sm:mt-0">
             <li>
                 <a href="{% url 'pages:about' %}" class="hover:underline me-4 md:me-6">About</a>
@@ -15,11 +18,11 @@
             <li>
                 <a href="{% url 'pages:licensing' %}" class="hover:underline me-4 md:me-6">Licensing</a>
             </li>
-            <li>
+            <!-- <li>
                 <a href="{% url 'pages:changelog' %}" class="hover:underline me-4 md:me-6">Changelog</a>
-            </li>
+            </li> -->
             <li>
-                <a href="https://www.linkedin.com/in/sakaria-ndadi/" class="hover:underline">Contact</a>
+                <a href="{% url 'pages:contact' %}" class="hover:underline">Contact</a>
             </li>
         </ul>
     </div>

@@ -1,11 +1,15 @@
+{% load static %}
 <nav x-data="{ mobileMenuIsOpen: false }" @click.away="mobileMenuIsOpen = false"
      class="flex items-center justify-between bg-yellow-500 border-b border-neutral-300 px-6 py-4 dark:border-neutral-700 dark:bg-neutral-900"
      aria-label="penguin ui menu">
     <!-- Brand Logo -->
     <a href="{% if user.is_authenticated %}{% url 'exam:index' %}{% else %}{% url 'pages:index' %}{% endif %}"
        class="text-2xl font-bold text-white dark:text-white">
-        <span>Test<span class="text-black dark:text-yellow-500">in</span>g</span>
-        <!-- <img src="./your-logo.svg" alt="brand logo" class="w-10" /> -->
+        <div class="inline-flex">
+            <img src="{% static 'icons/icon.png' %}" alt="brand logo" class="w-8 h-8" />
+            <span>Test<span class="text-sky-950 dark:text-yellow-500">in</span>g</span>
+        </div>
+
     </a>
     <!-- Desktop Menu -->
     <ul class="hidden items-center gap-4 md:flex">
@@ -13,20 +17,20 @@
             <li>
                 <c-modal buttonLabel="Logout" label="Logout" hx-get="{% url 'account_logout' %}" hx-trigger="click"
                          hx-target="#logout"
-                         class="font-medium text-white underline-offset-2 hover:text-black focus:outline-none focus:underline dark:text-white dark:hover:text-white">
+                         class="font-medium text-white underline-offset-2 hover:text-sky-950 focus:outline-none focus:underline dark:text-white dark:hover:text-white">
                     <div id="logout"></div>
                 </c-modal>
             </li>
         {% else %}
             <li>
                 <a href="{% url 'account_signup' %}"
-                   class="font-medium text-white underline-offset-2 hover:text-black focus:outline-none focus:underline dark:text-neutral-300 dark:hover:text-white">Sign
+                   class="font-medium text-white underline-offset-2 hover:text-sky-950 focus:outline-none focus:underline dark:text-neutral-300 dark:hover:text-white">Sign
                     Up</a>
             </li>
             <li>
                 <c-modal buttonLabel="Login" label="Login" hx-get="{% url 'account_login' %}" hx-trigger="click"
                          hx-target="#login"
-                         class="font-medium text-white underline-offset-2 hover:text-black focus:outline-none focus:underline dark:text-neutral-300 dark:hover:text-white">
+                         class="font-medium text-white underline-offset-2 hover:text-sky-950 focus:outline-none focus:underline dark:text-neutral-300 dark:hover:text-white">
                     <div id="login"></div>
                 </c-modal>
             </li>

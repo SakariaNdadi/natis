@@ -1,4 +1,7 @@
-from django.shortcuts import render, redirect
+import environ
+from django.shortcuts import redirect, render
+
+env = environ.Env()
 
 
 def index(request):
@@ -27,3 +30,10 @@ def license(request):
 def changelog(request):
     template_name = "pages/changelog.html"
     return render(request, template_name)
+
+
+def contact(request):
+    template_name = "pages/contact.html"
+    CONTACT_FORM = env("CONTACT_FORM")
+    context = {"source": CONTACT_FORM}
+    return render(request, template_name, context)
