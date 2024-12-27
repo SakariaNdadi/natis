@@ -15,7 +15,7 @@ from .models import Answer, ExamSession, LicenseType, Question, Questionnaire
 
 @login_required
 def index(request) -> HttpResponse:
-    template_name = "index.html"
+    template_name = "exam/index.html"
     exams = ExamSession.objects.filter(user=request.user, completed=True)
     exams_data = []
     questionnaire_scores = defaultdict(list)
@@ -48,7 +48,7 @@ def index(request) -> HttpResponse:
 
     context = {
         "exams_data": exams_data,
-        "avg_scores_labels": list(avg_scores.keys()),
+        "avg_scores_labels": [label.capitalize() for label in avg_scores.keys()],
         "avg_scores_data": list(avg_scores.values()),
     }
     return render(request, template_name, context)
