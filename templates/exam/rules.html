@@ -1,0 +1,26 @@
+<article>
+    <c-h4 title="Exam Duration:" />
+    <p>Each exam has a time limit of 1 hour. You must complete and submit the exam within this timeframe.</p>
+
+    <c-h4 title="Navigation Restrictions:" />
+
+    <p>Once you start the exam, you must remain on the exam page.</p>
+    <p>Navigating away from the page, closing the tab, or switching to another browser window will result in
+        the exam being automatically marked as completed.</p>
+
+    <c-h4 title="Impact on Average:" />
+
+    <p>If the exam is marked as completed due to navigation away from the page, it will affect your exam
+        average, regardless of the progress you had made.</p>
+
+    <c-h4 title="No Pauses:" />
+    <p> The timer continues to run even if you leave the page. Ensure you are fully prepared to complete the
+        exam in one sitting. Once the timer runs out the page will automatically submit.</p>
+
+    <c-h4 title="Technical Issues:" />
+    <p>
+        If you encounter any technical difficulties, contact support immediately. However, the navigation rule
+        will still apply, so avoid actions that could trigger an automatic submission.</p>
+</article>
+<br>
+<a href="{% url 'exam:take_exam' questionnaire.id %}"> <c-button label="Attempt {{ questionnaire }}" /> </a>

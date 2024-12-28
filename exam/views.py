@@ -5,9 +5,10 @@ from datetime import timedelta
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 
 from .forms import TakeExamForm
 from .models import Answer, ExamSession, LicenseType, Question, Questionnaire
@@ -123,8 +124,8 @@ def choose_questionnaire(request, license_type_id) -> HttpResponse:
 
 
 @login_required
-def read_rules(request) -> HttpResponse:
-    template_name = "exam/read_rules.html"
+def rules(request) -> HttpResponse:
+    template_name = "exam/rules.html"
     return render(request, template_name)
 
 
@@ -140,8 +141,9 @@ def take_exam(request, questionnaire_id) -> HttpResponse:
 
     if exam_session.is_time_up():
         exam_session.completed = True
+        exam_session.end_time = timezone.now()
         exam_session.save()
-        return redirect("exam:review_exam", exam_session_id=exam_session.id)
+        return redirect("exam:exam_result", exam_session_id=exam_session.id)
 
     if request.method == "POST":
         form = TakeExamForm(questions, request.POST)
@@ -161,8 +163,23 @@ def take_exam(request, questionnaire_id) -> HttpResponse:
         "questionnaire": questionnaire,
         "form": form,
         "time_left": time_left,
+        "exam_session": exam_session,
     }
     return render(request, template_name, context)
+
+
+@csrf_exempt
+@login_required
+def mark_exam_complete(request, exam_session_id) -> JsonResponse:
+    if request.method == "POST":
+        exam_session = get_object_or_404(
+            ExamSession, id=exam_session_id, user=request.user, completed=False
+        )
+        exam_session.completed = True
+        exam_session.end_time = timezone.now()
+        exam_session.save()
+        return JsonResponse({"status": "success"})
+    return JsonResponse({"status": "invalid_request"}, status=400)
 
 
 @login_required
