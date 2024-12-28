@@ -1,8 +1,10 @@
 {% extends "_base.html" %}
-{% block title %}{{ questionnaire.title }}{% endblock title %}
-
+{% block title %}{{ questionnaire.title|upper }}{% endblock title %}
 {% block content %}
-<c-h1 title="{{ questionnaire.title }}" />
+<div class="capitalize grid grid-cols-2">
+    <c-h1 title="{{ questionnaire.title }}" />
+</div>
+
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
 
@@ -14,7 +16,6 @@
             <div>
                 <h3 class="text-lg font-bold sm:text-xl">
                     {{ field.label }}
-                    {{ field.instance.image.url }}
                 </h3>
             </div>
         </div>

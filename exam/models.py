@@ -99,8 +99,8 @@ class Option(models.Model):
             if question:
                 option_count = question.options.count() + 1
                 self.text = f"Option {option_count}"
-        elif self.text:
-            self.text = self.text.lower()
+        # elif self.text:
+        #     self.text = self.text.lower()
         self.clean()
         super().save(*args, **kwargs)
 
