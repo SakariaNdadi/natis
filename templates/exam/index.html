@@ -8,138 +8,138 @@
 
 
 {% block extracss %}
-<link rel="stylesheet" href="{% static 'css/datatables.css' %}" />
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="{% static 'css/datatables.css' %}" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 {% endblock extracss %}
 
 
 {% block extrajs %}
-<script src="{% static 'js/charts.js' %}"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="{% static 'js/charts.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 {% endblock extrajs %}
 
 
 {% block content %}
-<div class="pb-20">
+    <div class="pb-20">
 
-    <div class="flex grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="flex grid grid-cols-1 md:grid-cols-2 gap-5">
         <!-- Take Exam -->
-        <div
-            class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-52">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight ">Take Exam</h5>
-            <p class="mb-3 font-normal">Test yourself by choose one of the current mock
-                exam papers available.</p>
-            <a href="{% url 'exam:choose_license_type' %}"
-                class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-yellow-600 rounded-lg hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-neutral-300 dark:bg-neutral-600 dark:hover:bg-neutral-700 dark:focus:ring-neutral-800">
-                Choose
-                <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                    fill="none" viewBox="0 0 14 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M1 5h12m0 0L9 1m4 4L9 9" />
-                </svg>
-            </a>
-        </div>
+            <div
+                class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-52">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight ">Take Exam</h5>
+                <p class="mb-3 font-normal">Test yourself by choose one of the current mock
+                    exam papers available.</p>
+                <a href="{% url 'exam:choose_license_type' %}"
+                   class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-yellow-600 rounded-lg hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-neutral-300 dark:bg-neutral-600 dark:hover:bg-neutral-700 dark:focus:ring-neutral-800">
+                    Choose
+                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                         fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M1 5h12m0 0L9 1m4 4L9 9" />
+                    </svg>
+                </a>
+            </div>
         <!-- Take Exam End -->
 
         <!-- Chart -->
-        {% if avg_scores_labels and avg_scores_data %}
-        <div class="capitalize">
-            <canvas id="barChart"></canvas>
-        </div>
-        {% endif %}
+            {% if avg_scores_labels and avg_scores_data %}
+                <div class="capitalize">
+                    <canvas id="barChart"></canvas>
+                </div>
+            {% endif %}
         <!-- Chart End -->
 
-    </div>
+        </div>
 
 
     <!-- Completed Exam -->
     {#{% if exam_data %}#}
-    <div class="block pt-20">
-        <div class="">
-            <table id="myTable" class="text-sm text-left">
-                <thead class="text-xs uppercase bg-yellow-500 dark:bg-gray-700 text-white">
-                    <tr>
-                        <th scope="col">
-                            Session
-                        </th>
-                        <th scope="col">
-                            Exam
-                        </th>
-                        <th scope="col">
-                            Score
-                        </th>
-                        <th scope="col" class="">
+        <div class="block pt-20">
+            <div class="">
+                <table id="myTable" class="text-sm text-left">
+                    <thead class="text-xs uppercase bg-yellow-500 dark:bg-gray-700 text-white">
+                        <tr>
+                            <th scope="col">
+                                Session
+                            </th>
+                            <th scope="col">
+                                Exam
+                            </th>
+                            <th scope="col">
+                                Score
+                            </th>
+                            <th scope="col" class="">
                             <!-- Actions -->
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for exam_data in exams_data %}
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap ">
-                            {{ exam_data.start_time }}
-                        </th>
-                        <td class="px-6 py-4 capitalize">
-                            {{ exam_data.questionnaire }}
-                        </td>
-                        <td>
-                            {{ exam_data.score_percentage }}
-                        </td>
-                        <td class="text-center">
-                            <a href="{% url 'exam:exam_result' exam_data.exam.id %}">View</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for exam_data in exams_data %}
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap ">
+                                    {{ exam_data.start_time }}
+                                </th>
+                                <td class="px-6 py-4 capitalize">
+                                    {{ exam_data.questionnaire }}
+                                </td>
+                                <td>
+                                    {{ exam_data.score_percentage }}
+                                </td>
+                                <td class="text-center">
+                                    <a href="{% url 'exam:exam_result' exam_data.exam.id %}">View</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
     {#{% endif %}#}
     <!-- Completed Exam End -->
-</div>
+    </div>
 {% endblock content %}
 {% block scripts %}
-<script>
-    const ctx1 = document.getElementById('barChart');
+    <script>
+        const ctx1 = document.getElementById('barChart');
 
-    new Chart(ctx1, {
-        type: 'bar',
-        data: {
-            labels: {{ avg_scores_labels| safe }},
-        datasets: [{
-            label: 'Average',
-            data: {{ avg_scores_data| safe }},
-        backgroundColor: [
-            'rgb(255, 99, 132)',
-            'rgb(75, 192, 192)',
-            'rgb(255, 205, 86)',
-            'rgb(201, 203, 207)',
-            'rgb(54, 162, 235)'
-        ]
+        new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: {{ avg_scores_labels| safe }},
+                datasets: [{
+                    label: 'Average',
+                    data: {{ avg_scores_data| safe }},
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(75, 192, 192)',
+                        'rgb(255, 205, 86)',
+                        'rgb(201, 203, 207)',
+                        'rgb(54, 162, 235)'
+                    ]
                 }]
             },
-        options: {
-        scales: {
-            y: {
-                beginAtZero: true
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
             }
-        }
-    }
         });
 
-    let table = new DataTable('#myTable', {
-        searching: true,
-        pageLength: 10,
-        lengthChange: false,
+        let table = new DataTable('#myTable', {
+            searching: true,
+            pageLength: 10,
+            lengthChange: false,
 
-        columnDefs: [
-            {
-                target: 3,
-                sortable: false,
-                searchable: false
-            },
-        ]
-    });
-</script>
+            columnDefs: [
+                {
+                    target: 3,
+                    sortable: false,
+                    searchable: false
+                },
+            ]
+        });
+    </script>
 {% endblock scripts %}

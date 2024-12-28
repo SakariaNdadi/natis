@@ -5,7 +5,7 @@
 *.pyc
 __pycache__/
 
-media/
+# media/
 staticfiles/
 data/
 */migrations/[0-1000]*.py

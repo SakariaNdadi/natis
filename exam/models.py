@@ -8,10 +8,10 @@ from simple_history.models import HistoricalRecords
 
 
 class Section(models.TextChoices):
-    CONTROLS = "CONTROLS", "Controls of motor vehicle"
-    RULES = "RULES", "Rules of the road"
-    LEGISLATION = "LEGISLATION", "Road traffic legislations"
-    SIGNS = "SIGNS", "Signs"
+    SECTION_D = "SECTION_D", "Section D"
+    SECTION_C = "SECTION_C", "Section C"
+    SECTION_E = "SECTION_E", "Section E"
+    SECTION_B = "SECTION_B", "Section B"
 
 
 class LicenseType(models.Model):
@@ -51,8 +51,8 @@ class Questionnaire(models.Model):
 
         with transaction.atomic():
             # Make title lowercase before saving
-            if self.title:
-                self.title = self.title.lower()
+            # if self.title:
+            #     self.title = self.title.lower()
 
             # Ensure the title is unique, appending incremented number if necessary
             base_title = self.title
@@ -81,7 +81,7 @@ class Option(models.Model):
     history = HistoricalRecords()
 
     def __str__(self) -> str:
-        return self.text or "Option Image"
+        return self.text.split("-")[0].strip() if "-" in self.text else self.text
 
     def clean(self) -> None:
         if not self.text and not self.image:
@@ -114,7 +114,7 @@ class QuestionOption(models.Model):
 
 
 class Question(models.Model):
-    question = models.CharField(max_length=255, unique=True)
+    question = models.CharField(max_length=255)
     image = models.ImageField(upload_to="questions/", blank=True, null=True)
     section = models.CharField(max_length=20, choices=Section.choices)
     options = models.ManyToManyField(Option, through=QuestionOption)
@@ -124,7 +124,7 @@ class Question(models.Model):
     history = HistoricalRecords()
 
     def __str__(self) -> str:
-        return self.question
+        return f"{self.section}: {self.question}"
 
     def clean(self):
         if self.answer and not self.pk:

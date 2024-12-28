@@ -48,3 +48,4 @@ class QuestionOptionInline(admin.TabularInline):
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ("question", "section")
     inlines = [QuestionOptionInline]
+    search_fields = ("answer",)
