@@ -134,12 +134,10 @@ def take_exam(request, questionnaire_id) -> HttpResponse:
     questionnaire = get_object_or_404(Questionnaire, id=questionnaire_id)
     questions = questionnaire.questions.all().prefetch_related("options")
 
-    # Create a new or get the existing session
     exam_session, created = ExamSession.objects.get_or_create(
         user=request.user, questionnaire=questionnaire, completed=False
     )
 
-    # Redirect if time is up
     if exam_session.is_time_up():
         exam_session.completed = True
         exam_session.save()
@@ -149,7 +147,6 @@ def take_exam(request, questionnaire_id) -> HttpResponse:
         form = TakeExamForm(questions, request.POST)
         if form.is_valid():
             form.save(session=exam_session)
-            # exam_session.completed = True
             exam_session.save()
             return redirect("exam:review_exam", exam_session_id=exam_session.id)
     else:

@@ -67,9 +67,9 @@ class Questionnaire(models.Model):
             if self.pk:  # Validate only if the instance has been saved before
                 for question in self.questions.all():
                     option_count = question.options.count()
-                    if option_count != 4:
+                    if option_count != 3:
                         raise ValidationError(
-                            f"The question '{question}' must have exactly 4 options."
+                            f"The question '{question}' must have exactly 3 options."
                         )
 
             super().save(*args, **kwargs)
@@ -105,11 +105,19 @@ class Option(models.Model):
         super().save(*args, **kwargs)
 
 
+class QuestionOption(models.Model):
+    question = models.ForeignKey("Question", on_delete=models.CASCADE)
+    option = models.ForeignKey(Option, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ("question", "option")
+
+
 class Question(models.Model):
     question = models.CharField(max_length=255, unique=True)
-    image = models.ImageField(upload_to="question", blank=True, null=True)
+    image = models.ImageField(upload_to="questions/", blank=True, null=True)
     section = models.CharField(max_length=20, choices=Section.choices)
-    options = models.ManyToManyField(Option)
+    options = models.ManyToManyField(Option, through=QuestionOption)
     answer = models.ForeignKey(
         "Option", on_delete=models.PROTECT, related_name="correct_for_questions"
     )
@@ -118,9 +126,16 @@ class Question(models.Model):
     def __str__(self) -> str:
         return self.question
 
-    def clean(self) -> None:
+    def clean(self):
+        if self.answer and not self.pk:
+            return  # Skip validation if the question is not yet saved
         if self.answer and self.answer not in self.options.all():
             raise ValidationError("The answer must be one of the associated options.")
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # if self.answer and self.answer not in self.options.all():
+        #     raise ValidationError("The answer must be one of the associated options.")
 
 
 class Answer(models.Model):
