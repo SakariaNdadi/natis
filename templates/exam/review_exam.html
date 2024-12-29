@@ -23,12 +23,14 @@
                 </thead>
                 <tbody>
                     {% for answer in answers %}
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 h-10">
                             <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
-                                {{ answer.question.question }}
+                                {{ answer.question.question }} {% if answer.question.image %}<span> <img
+                                    src="{{ answer.question.image.url }}" alt=""></span>{% endif %}
                             </th>
-                            <td class="px-6 py-4">
-                                {{ answer.response }}
+                            <td class="px-6 py-4 bg-green-50">
+                                {% if answer.response.image %}<img src="{{ answer.response.image.url }}"
+                                                                   alt="">{% else %}{{ answer.response.text }}{% endif %}
                             </td>
                         </tr>
                     {% endfor %}

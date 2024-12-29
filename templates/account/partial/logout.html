@@ -1,5 +1,5 @@
 <form method="post" action="{% url 'account_logout' %}">
     {% csrf_token %}
     <p>Are you sure you want to logout?</p>
-    <c-button label="YES" type="submit" />
+    <c-button label="Yes, logout" type="submit" danger />
 </form>

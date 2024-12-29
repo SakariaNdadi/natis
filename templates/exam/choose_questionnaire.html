@@ -99,7 +99,7 @@
 
         {% if user_questionnaires %}
             <c-h2 title="My random questionnaire" />
-            <div class="grid grid-cols-1 md:grid-cols-2">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                 {% for questionnaire in user_questionnaires %}
                     <div x-data="{rulesModalIsOpen2: false}">
                         <button @click="rulesModalIsOpen2 = true" type="button"

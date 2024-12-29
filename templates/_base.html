@@ -8,11 +8,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}{% endblock title %}</title>
         {% block extracss %}{% endblock extracss %}
+        <link rel="stylesheet" href="{% static 'css/output.css' %}">
         {% block extrajs %}{% endblock extrajs %}
         <script src="{% static 'js/alpine.focus.js' %}" defer></script>
         <script src="{% static 'js/alpine.js' %}" defer></script>
         <script src="{% static 'js/htmx.js' %}"></script>
-        <script src="{% static 'js/tailwind.js' %}"></script>
+    <!-- <script src="{% static 'js/tailwind.js' %}"></script> -->
     </head>
 
     <body class="bg-white dark:bg-gray-800 text-sm md:text-base dark:text-gray-400">

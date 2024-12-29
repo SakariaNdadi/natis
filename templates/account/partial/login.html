@@ -2,5 +2,5 @@
 <form method="post" action="{% url 'account_login' %}">
     {% csrf_token %}
     {{ form|crispy }}
-    <c-button label="YES" type="submit" />
+    <c-button label="Login" type="submit" />
 </form>
