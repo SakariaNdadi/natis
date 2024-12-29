@@ -1,8 +1,8 @@
 from datetime import timedelta
-
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models, transaction
+from django.db.models import F
 from django.utils import timezone
 from simple_history.models import HistoricalRecords
 
@@ -23,7 +23,7 @@ class LicenseType(models.Model):
 
 
 class Questionnaire(models.Model):
-    title = models.CharField(max_length=20, unique=True)
+    title = models.CharField(max_length=20, unique=True, db_index=True)
     license_type = models.ForeignKey(
         LicenseType, on_delete=models.CASCADE, related_name="questionnaires"
     )
@@ -34,6 +34,7 @@ class Questionnaire(models.Model):
         blank=True,
         null=True,
         related_name="generated_questionnaires",
+        db_index=True,
     )
     history = HistoricalRecords()
 
@@ -41,24 +42,23 @@ class Questionnaire(models.Model):
         return self.title
 
     def save(self, *args, **kwargs) -> None:
-        if self.user:
-            if Questionnaire.objects.filter(user=self.user).count() > 5:
-                raise ValidationError(
-                    "You can only generate a maximum of 4 questionnaires."
-                )
+        if self.user and Questionnaire.objects.filter(user=self.user).count() > 5:
+            raise ValidationError(
+                "You can only generate a maximum of 4 questionnaires."
+            )
 
         with transaction.atomic():
             base_title = self.title
             increment = 0
 
+            # Check for existing titles and append an increment
             while Questionnaire.objects.filter(title=self.title).exists():
                 increment += 1
                 self.title = f"{base_title}-{increment}"
 
-            if self.pk:
+            if self.pk:  # Validation for questions if updating
                 for question in self.questions.all():
-                    option_count = question.options.count()
-                    if option_count != 3:
+                    if question.options.count() != 3:
                         raise ValidationError(
                             f"The question '{question}' must have exactly 3 options."
                         )
@@ -67,8 +67,10 @@ class Questionnaire(models.Model):
 
 
 class Option(models.Model):
-    text = models.CharField(max_length=255, blank=True, null=True)
-    image = models.ImageField(upload_to="options/", blank=True, null=True)
+    text = models.CharField(max_length=255, blank=True, null=True, db_index=True)
+    image = models.ImageField(
+        upload_to="options/", blank=True, null=True, db_index=True
+    )
     history = HistoricalRecords()
 
     def __str__(self) -> str:
@@ -80,8 +82,7 @@ class Option(models.Model):
 
     def get_related_question(self):
         """Helper method to find the related question for this option."""
-        related_question = Question.objects.filter(options=self).first()
-        return related_question
+        return Question.objects.filter(options=self).first()
 
     def save(self, *args, **kwargs) -> None:
         if self.image and not self.text:
@@ -89,7 +90,13 @@ class Option(models.Model):
             if question:
                 option_count = question.options.count() + 1
                 self.text = f"Option {option_count}"
+
         self.clean()
+
+        # Ensure uniqueness for option text when automatically assigned
+        if self.text and Option.objects.filter(text=self.text).exists():
+            raise ValidationError(f"Option text '{self.text}' already exists.")
+
         super().save(*args, **kwargs)
 
 
@@ -102,9 +109,11 @@ class QuestionOption(models.Model):
 
 
 class Question(models.Model):
-    question = models.CharField(max_length=255)
-    image = models.ImageField(upload_to="questions/", blank=True, null=True)
-    section = models.CharField(max_length=20, choices=Section.choices)
+    question = models.CharField(max_length=255, db_index=True)
+    image = models.ImageField(
+        upload_to="questions/", blank=True, null=True, db_index=True
+    )
+    section = models.CharField(max_length=20, choices=Section.choices, db_index=True)
     options = models.ManyToManyField(Option, through=QuestionOption)
     answer = models.ForeignKey(
         "Option", on_delete=models.PROTECT, related_name="correct_for_questions"
@@ -115,8 +124,6 @@ class Question(models.Model):
         return f"{self.section}: {self.question}"
 
     def clean(self):
-        if self.answer and not self.pk:
-            return  # Skip validation if the question is not yet saved
         if self.answer and self.answer not in self.options.all():
             raise ValidationError("The answer must be one of the associated options.")
 
@@ -126,7 +133,7 @@ class Question(models.Model):
 
 class Answer(models.Model):
     session = models.ForeignKey(
-        "ExamSession", on_delete=models.CASCADE, related_name="answers"
+        "ExamSession", on_delete=models.CASCADE, related_name="answers", db_index=True
     )
     question = models.ForeignKey(
         Question, on_delete=models.PROTECT, related_name="answers"
@@ -149,13 +156,13 @@ class Answer(models.Model):
 
 class ExamSession(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="exam_sessions"
+        User, on_delete=models.CASCADE, related_name="exam_sessions", db_index=True
     )
     questionnaire = models.ForeignKey(
-        Questionnaire, on_delete=models.CASCADE, related_name="sessions"
+        Questionnaire, on_delete=models.CASCADE, related_name="sessions", db_index=True
     )
     start_time = models.DateTimeField(auto_now_add=True)
-    completed = models.BooleanField(default=False)
+    completed = models.BooleanField(default=False, db_index=True)
     end_time = models.DateTimeField(null=True, blank=True)
     history = HistoricalRecords()
 

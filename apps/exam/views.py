@@ -284,11 +284,6 @@ def exam_result(request, exam_session_id):
 def delete_exam_session(request, exam_session_id):
     exam_session = get_object_or_404(ExamSession, id=exam_session_id)
     user_answers = exam_session.answers.all()
-    correct_count = user_answers.filter(is_correct=True).count()
-    total_questions = exam_session.questionnaire.questions.count()
-    score_percentage = (correct_count / total_questions) * 100 if total_questions else 0
-
-    if request.method == "POST":
-        if score_percentage == 0:
-            exam_session.delete()
-            return redirect("exam:index")
+    if user_answers.count() == 0:
+        exam_session.delete()
+        return redirect("exam:index")

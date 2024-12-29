@@ -20,7 +20,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-2">
         <c-h2 title="Review {{ questionnaire.title }}" />
 
-        {% if score_percentage == 0 %}
+        {% if answers.count == 0 %}
             <div>
                 <form action="{% url 'exam:delete_exam_session' exam_session.id  %}" method="post">{% csrf_token %} <c-button
                     label="Delete" danger />
