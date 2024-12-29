@@ -1,32 +1,32 @@
 import environ
-from django.shortcuts import redirect
-from utils.views import render_page
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
 
 env = environ.Env()
 
 
-def index(request):
+def index(request) -> HttpResponse:
     if request.user.is_authenticated:
         return redirect("exam:index")
-    return render_page(request, "pages/index.html")
+    return render(request, "pages/index.html")
 
 
-def about(request):
-    return render_page(request, "pages/about.html")
+def about(request) -> HttpResponse:
+    return render(request, "pages/about.html")
 
 
-def privacy(request):
-    return render_page(request, "pages/privacy.html")
+def privacy(request) -> HttpResponse:
+    return render(request, "pages/privacy.html")
 
 
-def license(request):
-    return render_page(request, "pages/license.html")
+def license(request) -> HttpResponse:
+    return render(request, "pages/license.html")
 
 
-def changelog(request):
-    return render_page(request, "pages/changelog.html")
+def changelog(request) -> HttpResponse:
+    return render(request, "pages/changelog.html")
 
 
-def contact(request):
+def contact(request) -> HttpResponse:
     context = {"source": env("CONTACT_FORM")}
-    return render_page(request, "pages/contact.html", context)
+    return render(request, "pages/contact.html", context)
