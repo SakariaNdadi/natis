@@ -21,17 +21,18 @@
 
 
 {% block content %}
+    <c-loader />
     <div class="pb-20">
 
-        <div class="flex grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         <!-- Take Exam -->
             <div
                 class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-52">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight ">Take Exam</h5>
                 <p class="mb-3 font-normal">Test yourself by choose one of the current mock
                     exam papers available.</p>
-                <a href="{% url 'exam:choose_license_type' %}"
-                   class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-yellow-600 rounded-lg hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-neutral-300 dark:bg-neutral-600 dark:hover:bg-neutral-700 dark:focus:ring-neutral-800">
+                <a href="{% url 'exam:choose_license_type' %}" hx-boost="true"
+                   class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-yellow-600 rounded-lg hover:bg-yellow-600 dark:bg-neutral-600 dark:hover:bg-neutral-700 ">
                     Choose
                     <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                          fill="none" viewBox="0 0 14 10">

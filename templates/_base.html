@@ -18,11 +18,34 @@
 
     <body class="bg-white dark:bg-gray-800 text-sm md:text-base dark:text-gray-400">
         {% include 'includes/navbar.html' %}
-        <main class="p-10">{% block content %}{% endblock content %}</main>
 
-        {% block scripts %}{% endblock scripts %}
+    <!-- <div id="loading-overlay"
+        class="fixed inset-0 bg-white dark:bg-gray-800 z-50 flex items-center justify-center opacity-100 transition-opacity duration-500 ease-out">
+        <img src="{% static 'icons/icon.png' %}" alt="Loading..." class="animate-pulse">
+    </div> -->
+
+        <main id="content" class="p-10">{% block content %}{% endblock content %}</main>
+
+
         <br>
         {% include 'includes/footer.html' %}
+
+        {% block scripts %}{% endblock scripts %}
+        <script>
+            window.addEventListener("load", () => {
+                const loader = document.getElementById("loading-overlay");
+                const content = document.getElementById("content");
+
+            // Add the fade-out effect
+                loader.classList.add("opacity-0");
+
+            // Wait for the animation to complete (based on duration-500)
+                setTimeout(() => {
+                    loader.style.display = "none"; // Completely hide the loader
+                    content.style.opacity = "1"; // Show the main content
+                }, 500); // Matches Tailwind's 500ms duration
+            });
+        </script>
     </body>
 
 </html>

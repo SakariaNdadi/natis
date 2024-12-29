@@ -23,4 +23,5 @@
         will still apply, so avoid actions that could trigger an automatic submission.</p>
 </article>
 <br>
-<a href="{% url 'exam:take_exam' questionnaire.id %}"> <c-button label="Attempt {{ questionnaire }}" /> </a>
+<a href="{% url 'exam:take_exam' questionnaire.id %}" hx-boost="true"> <c-button label="Attempt {{ questionnaire }}" />
+</a>

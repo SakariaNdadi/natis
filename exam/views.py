@@ -4,14 +4,13 @@ from datetime import timedelta
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.db.models import Avg
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
 from .forms import TakeExamForm
-from .models import Answer, ExamSession, LicenseType, Question, Questionnaire
+from .models import ExamSession, LicenseType, Question, Questionnaire
 
 
 @login_required
@@ -79,18 +78,15 @@ def choose_questionnaire(request, license_type_id) -> HttpResponse:
     }
 
     if request.method == "POST":
-        # Handle redirect to ongoing session
         questionnaire_id = request.POST.get("questionnaire_id")
         if questionnaire_id and int(questionnaire_id) in ongoing_sessions:
             return redirect("exam:take_exam", questionnaire_id=questionnaire_id)
 
-        # Handle random questionnaire generation
         if "generate_random" in request.POST:
             title = request.POST.get("title", "").strip()
             if not title:
                 messages.error(request, "Please provide a title for the questionnaire.")
             else:
-                # Fetch all questions related to the license type
                 questions = Question.objects.filter(
                     questionnaires__license_type=license_type
                 )
@@ -102,10 +98,8 @@ def choose_questionnaire(request, license_type_id) -> HttpResponse:
                         "exam:choose_questionnaire", license_type_id=license_type.id
                     )
 
-                # Pick a random question
                 random_question = random.choice(questions)
 
-                # Create the questionnaire and associate it with the user
                 questionnaire = Questionnaire.objects.create(
                     title=title.lower(), license_type=license_type, user=request.user
                 )
@@ -139,6 +133,9 @@ def take_exam(request, questionnaire_id) -> HttpResponse:
         user=request.user, questionnaire=questionnaire, completed=False
     )
 
+    if exam_session.completed:
+        return redirect("exam:index")
+
     if exam_session.is_time_up():
         exam_session.completed = True
         exam_session.end_time = timezone.now()
@@ -170,16 +167,17 @@ def take_exam(request, questionnaire_id) -> HttpResponse:
 
 @csrf_exempt
 @login_required
-def mark_exam_complete(request, exam_session_id) -> JsonResponse:
+def mark_exam_complete(request, exam_session_id):
     if request.method == "POST":
-        exam_session = get_object_or_404(
-            ExamSession, id=exam_session_id, user=request.user, completed=False
-        )
-        exam_session.completed = True
-        exam_session.end_time = timezone.now()
-        exam_session.save()
-        return JsonResponse({"status": "success"})
-    return JsonResponse({"status": "invalid_request"}, status=400)
+        try:
+            exam_session = ExamSession.objects.get(id=exam_session_id, completed=False)
+            exam_session.completed = True
+            exam_session.end_time = timezone.now()
+            exam_session.save()
+            return JsonResponse({"success": True})
+        except ExamSession.DoesNotExist:
+            return JsonResponse({"error": "Exam session not found"}, status=404)
+    return JsonResponse({"error": "Invalid request"}, status=400)
 
 
 @login_required
@@ -187,12 +185,10 @@ def review_exam(request, exam_session_id) -> HttpResponse:
     template_name = "exam/review_exam.html"
     exam_session = get_object_or_404(ExamSession, id=exam_session_id)
 
-    # Redirect to the result page if the exam is already completed
     if exam_session.completed:
         return redirect("exam:exam_result", exam_session_id=exam_session.id)
 
     if request.method == "POST":
-        # Mark the session as completed when submitted
         exam_session.completed = True
         exam_session.end_time = timezone.now()
         exam_session.save()
@@ -211,7 +207,6 @@ def exam_result(request, exam_session_id) -> HttpResponse:
     exam_session = get_object_or_404(ExamSession, id=exam_session_id)
     user_answers = exam_session.answers.all()
 
-    # Group answers by section
     sections_data = {}
     for answer in user_answers:
         section = answer.question.section
@@ -228,19 +223,15 @@ def exam_result(request, exam_session_id) -> HttpResponse:
         else:
             sections_data[section]["wrong_count"] += 1
 
-    # Calculate score for the entire questionnaire
     correct_count = user_answers.filter(is_correct=True).count()
     wrong_count = user_answers.filter(is_correct=False).count()
     total_questions = exam_session.questionnaire.questions.count()
 
-    # Calculate the overall score percentage
     score_percentage = (correct_count / total_questions) * 100 if total_questions else 0
 
-    # Prepare chart data
     labels = list(sections_data.keys())
     correct_data = [data["correct_count"] for data in sections_data.values()]
     wrong_data = [data["wrong_count"] for data in sections_data.values()]
-    section_total = correct_data + wrong_data
 
     bar_chart_data = {
         "labels": labels,

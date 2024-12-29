@@ -9,7 +9,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
         {% for type in license_types %}
             <div>
-                <a href="{% url 'exam:choose_questionnaire' type.id %}"
+                <a href="{% url 'exam:choose_questionnaire' type.id %}" hx-boost="true"
                    class="relative block overflow-hidden rounded-lg border border-gray-300 hover:shadow-xl hover:shadow-gray-300 dark:hover:shadow-gray-500 p-4 sm:p-6 lg:p-8">
                     <span
                         class="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-yellow-500 via-yellow-600 to-sky-950"></span>

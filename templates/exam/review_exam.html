@@ -3,6 +3,7 @@
 {% block title %}{{ questionnaire.title|upper }}{% endblock title %}
 
 {% block content %}
+
     <div class="capitalize">
         <c-h2 title="{{ questionnaire.title }}" />
     </div>
@@ -23,12 +24,12 @@
                 </thead>
                 <tbody>
                     {% for answer in answers %}
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 h-10">
+                        <tr class="bg-white border-b border-sky-900 dark:bg-gray-800 dark:border-gray-700 h-10">
                             <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
                                 {{ answer.question.question }} {% if answer.question.image %}<span> <img
                                     src="{{ answer.question.image.url }}" alt=""></span>{% endif %}
                             </th>
-                            <td class="px-6 py-4 bg-green-50">
+                            <td class="px-6 py-4 bg-green-50 border-l">
                                 {% if answer.response.image %}<img src="{{ answer.response.image.url }}"
                                                                    alt="">{% else %}{{ answer.response.text }}{% endif %}
                             </td>

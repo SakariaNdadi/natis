@@ -39,10 +39,13 @@
             const currentUrl = window.location.href;
             const referrerUrl = document.referrer;
 
-        // Check if the user is navigating away to another URL (not a refresh)
+        // Ensure we have a valid exam session ID
+            const examSessionId = "{{ exam_session.id }}";
+            if (!examSessionId) return;
+
+        // Check if the user is navigating to a different URL
             if (referrerUrl && referrerUrl !== currentUrl) {
-                const examSessionId = "{{ exam_session.id }}"; // Inject the exam_session ID
-                const url = "{% url 'exam:mark_exam_complete' 0 %}".replace("0", examSessionId);
+                const url = `{% url 'exam:mark_exam_complete' 0 %}`.replace("0", examSessionId);
 
             // Send the request to mark the exam as complete
                 navigator.sendBeacon(url);
