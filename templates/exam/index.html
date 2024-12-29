@@ -84,7 +84,7 @@
                                     {{ exam_data.questionnaire }}
                                 </td>
                                 <td>
-                                    {{ exam_data.score_percentage }}
+                                    {{ exam_data.score_percentage|floatformat:2 }}
                                 </td>
                                 <td class="text-center">
                                     <a href="{% url 'exam:exam_result' exam_data.exam.id %}">View</a>

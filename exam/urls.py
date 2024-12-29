@@ -17,6 +17,11 @@ urlpatterns = [
     path("<int:exam_session_id>/review/", views.review_exam, name="review_exam"),
     path("<int:exam_session_id>/result/", views.exam_result, name="exam_result"),
     path(
+        "<int:exam_session_id>/delete/",
+        views.delete_exam_session,
+        name="delete_exam_session",
+    ),
+    path(
         "mark-exam-complete/<int:exam_session_id>/",
         views.mark_exam_complete,
         name="mark_exam_complete",

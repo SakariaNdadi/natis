@@ -1,4 +1,4 @@
 <button {{ attrs }}
-        class="inline-block rounded bg-yellow-600 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none active:bg-yellow-600">
+        class="inline-block rounded {% if danger %}bg-red-600 active:bg-red-600{% else %}bg-yellow-600 active:bg-yellow-600 {% endif %} px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none">
     {{ label }}
 </button>

@@ -210,14 +210,73 @@ def exam_result(request, exam_session_id) -> HttpResponse:
     template_name = "exam/exam_result.html"
     exam_session = get_object_or_404(ExamSession, id=exam_session_id)
     user_answers = exam_session.answers.all()
+
+    # Group answers by section
+    sections_data = {}
+    for answer in user_answers:
+        section = answer.question.section
+        if section not in sections_data:
+            sections_data[section] = {
+                "total_questions": 0,
+                "correct_count": 0,
+                "wrong_count": 0,
+            }
+
+        sections_data[section]["total_questions"] += 1
+        if answer.is_correct:
+            sections_data[section]["correct_count"] += 1
+        else:
+            sections_data[section]["wrong_count"] += 1
+
+    # Calculate score for the entire questionnaire
     correct_count = user_answers.filter(is_correct=True).count()
+    wrong_count = user_answers.filter(is_correct=False).count()
     total_questions = exam_session.questionnaire.questions.count()
+
+    # Calculate the overall score percentage
+    score_percentage = (correct_count / total_questions) * 100 if total_questions else 0
+
+    # Prepare chart data
+    labels = list(sections_data.keys())
+    correct_data = [data["correct_count"] for data in sections_data.values()]
+    wrong_data = [data["wrong_count"] for data in sections_data.values()]
+    section_total = correct_data + wrong_data
+
+    bar_chart_data = {
+        "labels": labels,
+        "datasets": [
+            {
+                "data": correct_data,
+            },
+            {
+                "data": wrong_data,
+            },
+        ],
+    }
 
     context = {
         "answers": user_answers,
         "questionnaire": exam_session.questionnaire,
         "correct_count": correct_count,
+        "wrong_count": wrong_count,
         "total_questions": total_questions,
-        "score_percentage": (correct_count / total_questions) * 100,
+        "score_percentage": score_percentage,
+        "bar_chart_data": bar_chart_data,
+        "exam_session": exam_session,
     }
+
     return render(request, template_name, context)
+
+
+@login_required
+def delete_exam_session(request, exam_session_id) -> HttpResponse:
+    exam_session = get_object_or_404(ExamSession, id=exam_session_id)
+    user_answers = exam_session.answers.all()
+    correct_count = user_answers.filter(is_correct=True).count()
+    total_questions = exam_session.questionnaire.questions.count()
+    score_percentage = (correct_count / total_questions) * 100 if total_questions else 0
+
+    if request.method == "POST":
+        if score_percentage == 0:
+            exam_session.delete()
+            return redirect("exam:index")

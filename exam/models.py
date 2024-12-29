@@ -15,7 +15,6 @@ class Section(models.TextChoices):
 
 
 class LicenseType(models.Model):
-    # CODE 1, 2, 3
     title = models.CharField(max_length=20, unique=True, db_index=True)
     description = models.TextField()
 
@@ -43,28 +42,20 @@ class Questionnaire(models.Model):
 
     def save(self, *args, **kwargs) -> None:
         if self.user:
-            # Check if the user has already generated 4 questionnaires
             if Questionnaire.objects.filter(user=self.user).count() > 5:
                 raise ValidationError(
                     "You can only generate a maximum of 4 questionnaires."
                 )
 
         with transaction.atomic():
-            # Make title lowercase before saving
-            # if self.title:
-            #     self.title = self.title.lower()
-
-            # Ensure the title is unique, appending incremented number if necessary
             base_title = self.title
             increment = 0
 
-            # Check if the title already exists (excluding the current instance if updating)
             while Questionnaire.objects.filter(title=self.title).exists():
                 increment += 1
                 self.title = f"{base_title}-{increment}"
 
-            # Validate questions and options (if already assigned)
-            if self.pk:  # Validate only if the instance has been saved before
+            if self.pk:
                 for question in self.questions.all():
                     option_count = question.options.count()
                     if option_count != 3:
@@ -94,13 +85,10 @@ class Option(models.Model):
 
     def save(self, *args, **kwargs) -> None:
         if self.image and not self.text:
-            # Automatically generate text for image-only options
             question = self.get_related_question()
             if question:
                 option_count = question.options.count() + 1
                 self.text = f"Option {option_count}"
-        # elif self.text:
-        #     self.text = self.text.lower()
         self.clean()
         super().save(*args, **kwargs)
 
@@ -134,8 +122,6 @@ class Question(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        # if self.answer and self.answer not in self.options.all():
-        #     raise ValidationError("The answer must be one of the associated options.")
 
 
 class Answer(models.Model):
