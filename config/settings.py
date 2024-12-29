@@ -27,16 +27,18 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # third party
     "django_browser_reload",
     "django_cotton",
     "simple_history",
-    "accounts",
-    "exam",
-    "pages",
     "allauth",
     "allauth.account",
     "crispy_forms",
     "crispy_tailwind",
+    # local
+    "apps.accounts",
+    "apps.exam",
+    "apps.pages",
 ]
 
 MIDDLEWARE = [

@@ -1,5 +1,4 @@
 from allauth.account.views import LoginView, LogoutView
-from django.shortcuts import render
 
 
 class CustomLogin(LoginView):
