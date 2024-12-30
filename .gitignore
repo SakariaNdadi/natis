@@ -1,16 +1,21 @@
-.venv
-*.sqlite3
+### Django ###
 *.log
 *.pot
 *.pyc
 __pycache__/
-
-# media/
+local_settings.py
+db.sqlite3
+media/
 staticfiles/
 data/
-*/migrations/[0-1000]*.py
+apps/*/migrations/[0-1000]*.py
 CACHE/
-
-.env
 node_modules/
 package-lock.json
+testing_data.json
+Pipfile.lock
+# Backup files # 
+*.bak
+ssl/
+.venv
+.env

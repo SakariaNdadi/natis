@@ -209,9 +209,6 @@ def take_exam(request, questionnaire_id) -> HttpResponse:
         if form.is_valid():
             # Save the form data, associating the answers with the current exam session
             form.save(session=exam_session)
-
-            # Mark the exam session as completed after the form is successfully saved
-            exam_session.completed = True
             exam_session.save()
 
             # Redirect to the review exam page to review the answers
