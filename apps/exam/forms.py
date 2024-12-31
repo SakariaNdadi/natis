@@ -32,12 +32,20 @@ class TakeExamForm(forms.Form):
             question_id = int(field_name.split("_")[1])
             question = Question.objects.get(id=question_id)
 
+            # Answer.objects.create(
+            #     session=session, question=question, response=selected_option
+            # )
+
+            # Determine if the selected option is the correct answer
+            is_correct = selected_option == question.answer
+
             # Add the Answer instance to the list (bulk creation can be more efficient)
             answers.append(
                 Answer(
                     session=session,
                     question=question,
                     response=selected_option,
+                    is_correct=is_correct,
                 )
             )
 
