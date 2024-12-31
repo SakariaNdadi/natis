@@ -25,29 +25,43 @@ class TakeExamForm(forms.Form):
                 required=True,
             )
 
-    def save(self, session):
-        answers = []
+    def save(self, session) -> None:
+        answers_to_create = []
+        answers_to_update = []
+
+        # Fetch existing answers in a single query
+        existing_answers = {
+            (answer.question_id, answer.session_id): answer
+            for answer in Answer.objects.filter(session=session)
+        }
+
         for field_name, selected_option in self.cleaned_data.items():
             # Extract question ID from the field name
             question_id = int(field_name.split("_")[1])
             question = Question.objects.get(id=question_id)
 
-            # Answer.objects.create(
-            #     session=session, question=question, response=selected_option
-            # )
+            answer_key = (question_id, session.id)
 
-            # Determine if the selected option is the correct answer
-            is_correct = selected_option == question.answer
-
-            # Add the Answer instance to the list (bulk creation can be more efficient)
-            answers.append(
-                Answer(
-                    session=session,
-                    question=question,
-                    response=selected_option,
-                    is_correct=is_correct,
+            if answer_key in existing_answers:
+                # Update existing answer
+                answer = existing_answers[answer_key]
+                answer.response = selected_option
+                answer.is_correct = selected_option == question.answer
+                answers_to_update.append(answer)
+            else:
+                # Create new answer
+                answers_to_create.append(
+                    Answer(
+                        session=session,
+                        question=question,
+                        response=selected_option,
+                        is_correct=selected_option == question.answer,
+                    )
                 )
-            )
 
-        # Bulk create answers to minimize database hits
-        Answer.objects.bulk_create(answers)
+        # Bulk create and update in a single query each
+        if answers_to_create:
+            Answer.objects.bulk_create(answers_to_create)
+
+        if answers_to_update:
+            Answer.objects.bulk_update(answers_to_update, ["response", "is_correct"])

@@ -147,6 +147,9 @@ class Answer(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     history = HistoricalRecords()
 
+    class Meta:
+        unique_together = ("session", "question")
+
     def __str__(self) -> str:
         return f"Answer for {self.session} - {self.question}: {self.response}"
 
