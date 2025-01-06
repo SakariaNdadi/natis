@@ -18,6 +18,7 @@ class Section(models.TextChoices):
 class LicenseType(models.Model):
     title = models.CharField(max_length=20, unique=True, db_index=True)
     description = models.TextField()
+    is_visible = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.title

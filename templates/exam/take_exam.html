@@ -5,7 +5,7 @@
         <c-h1 title="{{ questionnaire.title }}" />
     </div>
 
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" class="pb-20">
         {% csrf_token %}
 
         {% for field in form %}

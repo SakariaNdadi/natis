@@ -92,7 +92,7 @@ def index(request) -> HttpResponse:
 
 @login_required
 def choose_license_type(request) -> HttpResponse:
-    context = {"license_types": LicenseType.objects.all()}
+    context = {"license_types": LicenseType.objects.filter(is_visible=True)}
     return render(request, "exam/choose_license_type.html", context)
 
 
