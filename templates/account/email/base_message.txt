@@ -1,7 +1,7 @@
-{% load i18n %}{% autoescape off %}{% blocktrans with site_name=current_site.name %}Hello from NamibMock!{% endblocktrans %}
+{% load i18n %}{% autoescape off %}{% blocktrans with site_name=NamibMock %}Hello from NamibMock!{% endblocktrans %}
 
 {% block content %}{% endblock content %}
 
-{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}Thank you for using NamibMock!
-{{ site_domain }}{% endblocktrans %}
+{% blocktrans with site_name=NamibMock site_domain=NamibMock %}Thank you for using NamibMock!
+NamibMock{% endblocktrans %}
 {% endautoescape %}
