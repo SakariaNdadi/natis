@@ -1,15 +1,8 @@
 import os
 
-import environ
+from django.utils.translation import gettext_lazy as _
 
-from pathlib import Path
-
-env = environ.Env()
-
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-
-# Take environment variables from .env file
-environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
+from config.env import BASE_DIR, env
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
