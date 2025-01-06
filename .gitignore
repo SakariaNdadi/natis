@@ -6,7 +6,7 @@ __pycache__/
 local_settings.py
 db.sqlite3
 media/
-staticfiles/
+# staticfiles/
 data/
 apps/*/migrations/[0-1000]*.py
 CACHE/
