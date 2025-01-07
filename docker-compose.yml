@@ -1,0 +1,87 @@
+networks:
+  my_network:
+    driver: bridge
+
+services:
+  web:
+    container_name: app
+    build: .
+    networks:
+      - my_network
+    command:
+      [
+        "gunicorn",
+        "config.wsgi:application",
+        "--bind",
+        "0.0.0.0:8000",
+        "--workers",
+        "4",
+      ]
+    restart: always
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+      - "5555:5555"
+    environment:
+      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
+      - BROKER_URL=${BROKER_URL}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    depends_on:
+      - db
+      - cache
+
+  # Database service (Postgresql)
+  db:
+    container_name: database
+    image: postgres:latest
+    networks:
+      - my_network
+    restart: always
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    expose:
+      - "5432:5432"
+
+  # PgAdmin To interact with database
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    networks:
+      - my_network
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - "5050:80"
+
+  # Cache
+  cache:
+    container_name: cache
+    image: redis:latest
+    networks:
+      - my_network
+    restart: always
+    volumes:
+      - ./data/cache:/data
+
+  # Nginx service (reverse proxy)
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    networks:
+      - my_network
+    restart: always
+    volumes:
+      - ./config/nginx:/etc/nginx/templates
+      - .:/code
+    ports:
+      - "80:80"
+      - "443:443"
