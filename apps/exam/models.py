@@ -6,6 +6,10 @@ from django.db import models, transaction
 from django.db.models import F
 from django.utils import timezone
 from simple_history.models import HistoricalRecords
+from django.core.files.storage import FileSystemStorage
+from shutil import copyfile
+from django.conf import settings
+import os
 
 
 class Section(models.TextChoices):
@@ -69,9 +73,12 @@ class Questionnaire(models.Model):
 
 
 class Option(models.Model):
+    def static_upload_path(instance, filename):
+        return os.path.join("options", filename)
+
     text = models.CharField(max_length=255, blank=True, null=True, db_index=True)
     image = models.ImageField(
-        upload_to="options/", blank=True, null=True, db_index=True
+        upload_to=static_upload_path, blank=True, null=True, db_index=True
     )
     history = HistoricalRecords()
 
@@ -93,6 +100,14 @@ class Option(models.Model):
                 option_count = question.options.count() + 1
                 self.text = f"Option {option_count}"
 
+        if self.image:
+            source_path = self.image.path
+            dest_path = os.path.join(
+                settings.STATIC_ROOT, "options", os.path.basename(self.image.name)
+            )
+            os.makedirs(os.path.dirname(dest_path), exist_ok=True)
+            copyfile(source_path, dest_path)
+
         self.clean()
 
         # Ensure uniqueness for option text when automatically assigned
@@ -111,9 +126,12 @@ class QuestionOption(models.Model):
 
 
 class Question(models.Model):
+    def static_upload_path(instance, filename):
+        return os.path.join("media", filename)
+
     question = models.CharField(max_length=255, db_index=True)
     image = models.ImageField(
-        upload_to="questions/", blank=True, null=True, db_index=True
+        upload_to=static_upload_path, blank=True, null=True, db_index=True
     )
     section = models.CharField(max_length=20, choices=Section.choices, db_index=True)
     options = models.ManyToManyField(Option, through=QuestionOption)
@@ -130,6 +148,14 @@ class Question(models.Model):
             raise ValidationError("The answer must be one of the associated options.")
 
     def save(self, *args, **kwargs):
+        if self.image:
+            source_path = self.image.path
+            dest_path = os.path.join(
+                settings.STATIC_ROOT, "media", os.path.basename(self.image.name)
+            )
+            os.makedirs(os.path.dirname(dest_path), exist_ok=True)
+            copyfile(source_path, dest_path)
+
         super().save(*args, **kwargs)
 
 
