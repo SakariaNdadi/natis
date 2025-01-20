@@ -22,7 +22,7 @@ class TakeExamForm(forms.Form):
                 queryset=question.options.all(),
                 widget=forms.RadioSelect,
                 label=mark_safe(label_html),  # Ensure safe HTML rendering
-                required=True,
+                required=False,
             )
 
     def save(self, session) -> None:

@@ -138,7 +138,11 @@ class Answer(models.Model):
         Question, on_delete=models.PROTECT, related_name="answers"
     )
     response = models.ForeignKey(
-        Option, on_delete=models.PROTECT, related_name="selected_by"
+        Option,
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True,
+        related_name="selected_by",
     )
     is_correct = models.BooleanField(default=False, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
