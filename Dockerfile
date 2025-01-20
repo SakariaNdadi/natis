@@ -20,6 +20,3 @@ RUN pip install -r requirements.txt
 
 # Copy the entire Django project (current directory) into the container
 COPY . /code/
-
-# Collect static files
-RUN python manage.py collectstatic --no-input
