@@ -9,12 +9,9 @@ urlpatterns = [
     path("account/", include("apps.accounts.urls")),
     path("exam/", include("apps.exam.urls", namespace="exam")),
     path("", include("apps.pages.urls", namespace="pages")),
-]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if not settings.DEBUG:
-    urlpatterns.append(path("not/admin", admin.site.urls))
+    urlpatterns.append(path("not/admin/", admin.site.urls))
 else:
     urlpatterns.append(path("admin/", admin.site.urls))
