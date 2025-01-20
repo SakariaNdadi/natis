@@ -8,6 +8,7 @@ from django.db import transaction
 from django.db.models import Count, F
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
@@ -262,10 +263,12 @@ def mark_exam_complete(request, exam_session_id) -> JsonResponse:
         exam_session.save()
 
         # Return a JSON response indicating success
-        return JsonResponse({"success": True})
+        return JsonResponse(
+            {"redirect_url": reverse("exam:exam_result", args=[exam_session_id])}
+        )
 
     # If the request method is not POST, return an error response with status 400
-    return JsonResponse({"error": "Invalid request method. Use POST."}, status=400)
+    return JsonResponse({"error": "Invalid request method."}, status=400)
 
 
 # This view allows the user to review their exam answers and mark the exam as completed.
