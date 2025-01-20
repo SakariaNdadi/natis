@@ -32,7 +32,7 @@ EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://cache:6379",
+        "LOCATION": env("REDIS_URL"),
     }
 }
 
