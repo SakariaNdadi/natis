@@ -1,15 +1,15 @@
+import os
 from datetime import timedelta
+from shutil import copyfile
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.core.files.storage import FileSystemStorage
 from django.db import models, transaction
 from django.db.models import F
 from django.utils import timezone
 from simple_history.models import HistoricalRecords
-from django.core.files.storage import FileSystemStorage
-from shutil import copyfile
-from django.conf import settings
-import os
 
 
 class Section(models.TextChoices):
