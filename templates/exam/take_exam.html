@@ -2,11 +2,11 @@
 {% block title %}{{ questionnaire.title|upper }}{% endblock title %}
 
 {% block content %}
-    <div class="capitalize grid grid-cols-2">
+    <div class="capitalize grid grid-cols-2 relative">
         <c-h1 title="{{ questionnaire.title }}" />
 
-        <div>
-            <p>Time Remaining: <span id="timer"></span></p>
+        <div class="fixed top-5 right-5 bg-white px-5 py-2 border z-10 md:block text-red-500">
+            <span id="timer">00:00</span>
         </div>
     </div>
 
