@@ -15,5 +15,7 @@ if not settings.DEBUG:
 else:
     urlpatterns.append(
         path("admin/", admin.site.urls),
+    )
+    urlpatterns.append(
         path("__reload__/", include("django_browser_reload.urls")),
     )

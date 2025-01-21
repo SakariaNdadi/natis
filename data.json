@@ -4,7 +4,8 @@
 		"pk": 1,
 		"fields": {
 			"title": "Code 1",
-			"description": "Applicants who applied for a learners licence Code 1 must answer:\r\n1. Section B\r\n2. Section C and\r\n3. Section D"
+			"description": "Applicants who applied for a learners licence Code 1 must answer:\r\n1. Section B\r\n2. Section C and\r\n3. Section D",
+			"is_visible": 1
 		}
 	},
 	{
