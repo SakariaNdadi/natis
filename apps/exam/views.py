@@ -121,17 +121,19 @@ def choose_questionnaire(request, license_type_id) -> HttpResponse:
 def take_exam(request, questionnaire_id) -> HttpResponse:
     questionnaire = get_object_or_404(Questionnaire, id=questionnaire_id)
     questions = questionnaire.questions.all().prefetch_related("options")
+
+    existing_session = ExamSession.objects.filter(
+        user=request.user, questionnaire=questionnaire, completed=False
+    ).first()
+
+    if existing_session:
+        existing_session.delete()
+
     exam_session, created = ExamSession.objects.get_or_create(
         user=request.user, questionnaire=questionnaire, completed=False
     )
 
     if exam_session.completed:
-        return redirect("exam:index")
-
-    if exam_session.is_time_up():
-        exam_session.completed = True
-        exam_session.end_time = timezone.now()
-        exam_session.save()
         return redirect("exam:exam_result", exam_session_id=exam_session.id)
 
     if request.method == "POST":
