@@ -1,43 +1,6 @@
 {% extends "_base.html" %}
 {% block title %}{{ questionnaire.title|upper }}{% endblock title %}
-{% block extrajs %}
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-        // Get the time_left value from the template (e.g., "0:53:06.082051")
-            const timeLeftString = "{{ time_left }}";
 
-        // Parse the time_left string into hours, minutes, and seconds
-            const timeParts = timeLeftString.split(":");
-            let minutes = parseInt(timeParts[1], 10); // Only minutes
-            let seconds = Math.floor(parseFloat(timeParts[2])); // Ignore microseconds
-
-        // Convert total time to seconds for the countdown
-            let totalSeconds = minutes * 60 + seconds;
-
-        // Function to format time as MM:SS
-            function formatTime(seconds) {
-                const mins = Math.floor(seconds / 60);
-                const secs = seconds % 60;
-                return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-            }
-
-        // Set initial timer display
-            const timerDisplay = document.getElementById("timer");
-            timerDisplay.textContent = formatTime(totalSeconds);
-
-        // Update the timer every second
-            const countdown = setInterval(() => {
-                totalSeconds -= 1;
-                if (totalSeconds < 0) {
-                    clearInterval(countdown);
-                    timerDisplay.textContent = "Time's up!";
-                } else {
-                    timerDisplay.textContent = formatTime(totalSeconds);
-                }
-            }, 1000);
-        });
-    </script>
-{% endblock extrajs %}
 {% block content %}
     <div class="capitalize grid grid-cols-2">
         <c-h1 title="{{ questionnaire.title }}" />
@@ -47,7 +10,7 @@
         </div>
     </div>
 
-    <form method="post" enctype="multipart/form-data" class="pb-20">
+    <form method="post" enctype="multipart/form-data" class="pb-20" id="exam-form">
         {% csrf_token %}
 
         {% for field in form %}
@@ -79,7 +42,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const timeLeftString = "{{ time_left }}";
-            const examSessionId = "{{ exam_session.id }}"; // Pass the session ID from the template
+            const examSessionId = "{{ exam_session.id }}";
             const timeParts = timeLeftString.split(":");
             let minutes = parseInt(timeParts[1], 10);
             let seconds = Math.floor(parseFloat(timeParts[2]));
@@ -105,14 +68,14 @@
                     fetch(`/exam/mark-exam-complete/${examSessionId}/`, {
                         method: 'POST',
                         headers: {
-                            'X-CSRFToken': '{{ csrf_token }}', // Include CSRF token for security
+                            'X-CSRFToken': '{{ csrf_token }}',
                             'Content-Type': 'application/json',
                         }
                     })
                         .then(response => response.json())
                         .then(data => {
                             if (data.redirect_url) {
-                                window.location.href = data.redirect_url; // Redirect to the exam result page
+                                window.location.href = data.redirect_url;
                             } else {
                                 console.error('Failed to redirect: ', data.error);
                             }
@@ -124,5 +87,4 @@
             }, 1000);
         });
     </script>
-
 {% endblock scripts %}
