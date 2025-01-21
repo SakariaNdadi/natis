@@ -1,11 +1,16 @@
 {% extends "_base.html" %}
 {% block title %}{{ questionnaire.title|upper }}{% endblock title %}
+
 {% block content %}
-    <div class="capitalize grid grid-cols-2">
+    <div class="capitalize grid grid-cols-2 relative">
         <c-h1 title="{{ questionnaire.title }}" />
+
+        <div class="fixed top-5 right-5 bg-white px-5 py-2 border z-10 md:block text-red-500">
+            <span id="timer">00:00</span>
+        </div>
     </div>
 
-    <form method="post" enctype="multipart/form-data" class="pb-20">
+    <form method="post" enctype="multipart/form-data" class="pb-20" id="exam-form">
         {% csrf_token %}
 
         {% for field in form %}
@@ -13,10 +18,8 @@
                 <span class="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-yellow-500 via-yellow-600 to-sky-950"></span>
 
                 <div class="sm:flex sm:justify-between sm:gap-4">
-                    <div>
-                        <h3 class="text-lg font-bold sm:text-xl">
-                            {{ field.label }}
-                        </h3>
+                    <div class="text-lg font-bold sm:text-xl">
+                        {{ field.label }}
                     </div>
                 </div>
 
@@ -33,23 +36,58 @@
     </form>
 
 {% endblock %}
+
+
 {% block scripts %}
-<!-- <script>
-        window.addEventListener("beforeunload", function (e) {
-            const currentUrl = window.location.href;
-            const referrerUrl = document.referrer;
-
-        // Ensure we have a valid exam session ID
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const timeLeftString = "{{ time_left }}";
             const examSessionId = "{{ exam_session.id }}";
-            if (!examSessionId) return;
+            const timeParts = timeLeftString.split(":");
+            let minutes = parseInt(timeParts[1], 10);
+            let seconds = Math.floor(parseFloat(timeParts[2]));
 
-        // Check if the user is navigating to a different URL
-            if (referrerUrl && referrerUrl !== currentUrl) {
-                const url = `{% url 'exam:mark_exam_complete' 0 %}`.replace("0", examSessionId);
+            let totalSeconds = minutes * 60 + seconds;
 
-            // Send the request to mark the exam as complete
-                navigator.sendBeacon(url);
+            function formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
             }
+
+            const timerDisplay = document.getElementById("timer");
+            timerDisplay.textContent = formatTime(totalSeconds);
+
+            const countdown = setInterval(() => {
+                totalSeconds -= 1;
+                if (totalSeconds < 0) {
+                    clearInterval(countdown);
+                    timerDisplay.textContent = "Time's up!";
+
+                    const formData = new FormData(document.querySelector('form'));
+
+                // Make an AJAX request to mark the exam complete
+                    fetch(`/exam/mark-exam-complete/${examSessionId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                        // 'Content-Type': 'application/json',
+                        },
+                        body: formData
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.redirect_url) {
+                                window.location.href = data.redirect_url;
+                            } else {
+                                console.error('Failed to redirect: ', data.error);
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                } else {
+                    timerDisplay.textContent = formatTime(totalSeconds);
+                }
+            }, 1000);
         });
-    </script> -->
+    </script>
 {% endblock scripts %}

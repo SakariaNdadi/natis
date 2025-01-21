@@ -10,7 +10,7 @@ class TakeExamForm(forms.Form):
         for question in questions:
             # Generate the image HTML if available
             image_html = (
-                f'<img src="{question.image.url}" alt="{question.question}" class="question-image" />'
+                f'<img src="{question.image.url}" alt="{question.question}" />'
                 if question.image
                 else ""
             )
@@ -22,7 +22,7 @@ class TakeExamForm(forms.Form):
                 queryset=question.options.all(),
                 widget=forms.RadioSelect,
                 label=mark_safe(label_html),  # Ensure safe HTML rendering
-                required=True,
+                required=False,
             )
 
     def save(self, session) -> None:

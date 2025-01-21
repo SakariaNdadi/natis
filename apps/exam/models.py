@@ -3,7 +3,6 @@ from datetime import timedelta
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models, transaction
-from django.db.models import F
 from django.utils import timezone
 from simple_history.models import HistoricalRecords
 
@@ -70,9 +69,7 @@ class Questionnaire(models.Model):
 
 class Option(models.Model):
     text = models.CharField(max_length=255, blank=True, null=True, db_index=True)
-    image = models.ImageField(
-        upload_to="options/", blank=True, null=True, db_index=True
-    )
+    image = models.ImageField(upload_to="options", blank=True, null=True, db_index=True)
     history = HistoricalRecords()
 
     def __str__(self) -> str:
@@ -113,7 +110,7 @@ class QuestionOption(models.Model):
 class Question(models.Model):
     question = models.CharField(max_length=255, db_index=True)
     image = models.ImageField(
-        upload_to="questions/", blank=True, null=True, db_index=True
+        upload_to="questions", blank=True, null=True, db_index=True
     )
     section = models.CharField(max_length=20, choices=Section.choices, db_index=True)
     options = models.ManyToManyField(Option, through=QuestionOption)
@@ -141,7 +138,11 @@ class Answer(models.Model):
         Question, on_delete=models.PROTECT, related_name="answers"
     )
     response = models.ForeignKey(
-        Option, on_delete=models.PROTECT, related_name="selected_by"
+        Option,
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True,
+        related_name="selected_by",
     )
     is_correct = models.BooleanField(default=False, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -591,12 +591,20 @@ video {
   bottom: 0px;
 }
 
+.right-5 {
+  right: 1.25rem;
+}
+
 .right-6 {
   right: 1.5rem;
 }
 
 .top-0 {
   top: 0px;
+}
+
+.top-5 {
+  top: 1.25rem;
 }
 
 .top-6 {
@@ -1838,6 +1846,10 @@ video {
 @media (min-width: 768px) {
   .md\:me-6 {
     margin-inline-end: 1.5rem;
+  }
+
+  .md\:block {
+    display: block;
   }
 
   .md\:flex {
