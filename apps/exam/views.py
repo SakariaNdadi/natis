@@ -10,7 +10,6 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
-from django.views.decorators.csrf import csrf_exempt
 
 from .forms import TakeExamForm
 from .models import ExamSession, LicenseType, Question, Questionnaire
@@ -29,6 +28,7 @@ def index(request) -> HttpResponse:
     )
     exams_data = []
     questionnaire_scores = defaultdict(list)
+
     for exam in exams:
         correct_count = exam.correct_count
         total_questions = exam.total_questions
@@ -83,16 +83,20 @@ def choose_questionnaire(request, license_type_id) -> HttpResponse:
 
     if request.method == "POST":
         questionnaire_id = request.POST.get("questionnaire_id")
+
         if questionnaire_id and int(questionnaire_id) in ongoing_sessions:
             return redirect("exam:take_exam", questionnaire_id=questionnaire_id)
+
         if "generate_random" in request.POST:
             title = request.POST.get("title", "").strip()
+
             if not title:
                 messages.error(request, "Please provide a title for the questionnaire.")
             else:
                 questions = Question.objects.filter(
                     questionnaires__license_type=license_type
                 )
+
                 if not questions.exists():
                     messages.error(
                         request, "No questions available for this license type."
@@ -106,6 +110,7 @@ def choose_questionnaire(request, license_type_id) -> HttpResponse:
                 )
                 questionnaire.questions.add(random_question)
                 questionnaire.save()
+
                 return redirect(
                     "exam:choose_questionnaire", license_type_id=license_type.id
                 )
@@ -119,15 +124,19 @@ def take_exam(request, questionnaire_id) -> HttpResponse:
     exam_session, created = ExamSession.objects.get_or_create(
         user=request.user, questionnaire=questionnaire, completed=False
     )
+
     if exam_session.completed:
         return redirect("exam:index")
+
     if exam_session.is_time_up():
         exam_session.completed = True
         exam_session.end_time = timezone.now()
         exam_session.save()
         return redirect("exam:exam_result", exam_session_id=exam_session.id)
+
     if request.method == "POST":
         form = TakeExamForm(questions, request.POST)
+
         if form.is_valid():
             form.save(session=exam_session)
             exam_session.save()
@@ -151,33 +160,45 @@ def take_exam(request, questionnaire_id) -> HttpResponse:
     return render(request, "exam/take_exam.html", context)
 
 
-# @csrf_exempt
 @login_required
 def mark_exam_complete(request, exam_session_id) -> JsonResponse:
     if request.method == "POST":
         exam_session = get_object_or_404(
             ExamSession, id=exam_session_id, completed=False
         )
-        exam_session.completed = True
-        exam_session.end_time = timezone.now()
-        exam_session.save()
-        return JsonResponse(
-            {"redirect_url": reverse("exam:exam_result", args=[exam_session_id])}
-        )
+        questionnaire = exam_session.questionnaire
+        questions = questionnaire.questions.all().prefetch_related("options")
+        form = TakeExamForm(questions, request.POST)
+
+        if form.is_valid():
+            form.save(session=exam_session)
+            exam_session.completed = True
+            exam_session.end_time = timezone.now()
+            exam_session.save()
+            return JsonResponse(
+                {"redirect_url": reverse("exam:exam_result", args=[exam_session_id])}
+            )
+
+        else:
+            return JsonResponse({"errors": form.errors}, status=400)
+
     return JsonResponse({"error": "Invalid request method."}, status=400)
 
 
 @login_required
 def review_exam(request, exam_session_id) -> HttpResponse:
     exam_session = get_object_or_404(ExamSession, id=exam_session_id)
+
     if exam_session.completed:
         return redirect("exam:exam_result", exam_session_id=exam_session.id)
+
     if request.method == "POST":
         with transaction.atomic():
             exam_session.completed = True
             exam_session.end_time = timezone.now()
             exam_session.save()
         return redirect("exam:exam_result", exam_session_id=exam_session.id)
+
     answers = exam_session.answers.select_related("question", "response")
     context = {
         "questionnaire": exam_session.questionnaire,
@@ -191,8 +212,10 @@ def exam_result(request, exam_session_id) -> HttpResponse:
     exam_session = get_object_or_404(ExamSession, id=exam_session_id)
     user_answers = exam_session.answers.all()
     sections_data = {}
+
     for answer in user_answers:
         section = answer.question.section
+
         if section not in sections_data:
             sections_data[section] = {
                 "total_questions": 0,
@@ -200,10 +223,12 @@ def exam_result(request, exam_session_id) -> HttpResponse:
                 "wrong_count": 0,
             }
         sections_data[section]["total_questions"] += 1
+
         if answer.is_correct:
             sections_data[section]["correct_count"] += 1
         else:
             sections_data[section]["wrong_count"] += 1
+
     correct_count = user_answers.filter(is_correct=True).count()
     wrong_count = user_answers.filter(is_correct=False).count()
     total_questions = exam_session.questionnaire.questions.count()
@@ -239,6 +264,7 @@ def exam_result(request, exam_session_id) -> HttpResponse:
 def delete_exam_session(request, exam_session_id) -> HttpResponse:
     exam_session = get_object_or_404(ExamSession, id=exam_session_id)
     user_answers = exam_session.answers.all()
+
     if user_answers.count() == 0:
         exam_session.delete()
         return redirect("exam:index")
