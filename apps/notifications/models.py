@@ -1,3 +1,13 @@
 from django.db import models
 
-# Create your models here.
+
+class Announcement(models.Model):
+    class TYPES(models.TextChoices):
+        INFO = "INFO"
+        DANGER = "DANGER"
+        WARNING = "WARNING"
+
+    a_type = models.CharField(max_length=20, choices=TYPES.choices, default=TYPES.INFO)
+    text = models.CharField(max_length=300)
+    is_visible = models.BooleanField(default=False)
+    end_date = models.DateTimeField(blank=True, null=True)
