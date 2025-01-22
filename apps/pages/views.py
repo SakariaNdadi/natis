@@ -2,13 +2,17 @@ import environ
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
+from apps.notifications.models import Announcement
+
 env = environ.Env()
 
 
 def index(request) -> HttpResponse:
     if request.user.is_authenticated:
         return redirect("exam:index")
-    return render(request, "pages/index.html")
+
+    context = {"announcements": Announcement.objects.filter(is_visible=True)}
+    return render(request, "pages/index.html", context)
 
 
 def about(request) -> HttpResponse:

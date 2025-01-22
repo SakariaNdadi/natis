@@ -11,6 +11,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 
+from apps.notifications.models import Announcement
+
 from .forms import TakeExamForm
 from .models import ExamSession, LicenseType, Question, Questionnaire
 
@@ -51,6 +53,7 @@ def index(request) -> HttpResponse:
         for questionnaire, scores in questionnaire_scores.items()
     }
     context = {
+        "announcements": Announcement.objects.filter(is_visible=True),
         "exams_data": exams_data,
         "avg_scores_labels": [label.capitalize() for label in avg_scores.keys()],
         "avg_scores_data": list(avg_scores.values()),
