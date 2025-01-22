@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "apps.accounts",
     "apps.exam",
     "apps.pages",
+    "apps.notifications",
 ]
 
 MIDDLEWARE = [
