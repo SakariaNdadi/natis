@@ -1,7 +1,7 @@
 """
-    Django project settings.
-    This module contains the base directory path and environment variable setup
-    for the Django project.
+Django project settings.
+This module contains the base directory path and environment variable setup
+for the Django project.
 """
 
 import os
