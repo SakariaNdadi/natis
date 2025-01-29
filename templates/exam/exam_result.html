@@ -51,37 +51,39 @@
         </div>
         <br>
 
-
-        <table id="myTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-lg uppercase bg-yellow-500 dark:bg-gray-700 text-white">
-                <tr>
-                    <th scope="col" class="px-6 py-3">Question</th>
-                    <th scope="col" class="px-6 py-3">Your Answer</th>
-                    <th scope="col" class="px-6 py-3">Correct Answer</th>
-                    <th scope="col" class="px-6 py-3">Correct?</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for answer in answers %}
-                    <tr
-                        class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b border-sky-900 dark:border-gray-700">
-                        <td class="px-6 py-4">{{ answer.question.question }} {% if answer.question.image %}<span> <img
-                            src="{{ answer.question.image.url }}" alt=""></span>{% endif %} </td>
-                        <td class="px-6 py-4">{% if answer.response.image %}<img src="{{ answer.response.image.url }}"
-                                                                                 alt="">{% else %}{{ answer.response.text }}{% endif %}</td>
-                        <td class="px-6 py-4">{% if answer.question.answer.image %}<img src="{{ answer.question.answer.image.url }}"
-                                                                                        alt="">{% else %}{{ answer.question.answer.text }}{% endif %}</td>
-                        <td class="px-6 py-4">
-                            {% if answer.is_correct %}
-                                ✅
-                            {% else %}
-                                ❌
-                            {% endif %}
-                        </td>
+        <div class="overflow-x-scroll md:block ">
+            <table id="myTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-lg uppercase bg-yellow-500 dark:bg-gray-700 text-white">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Question</th>
+                        <th scope="col" class="px-6 py-3">Your Answer</th>
+                        <th scope="col" class="px-6 py-3">Correct Answer</th>
+                        <th scope="col" class="px-6 py-3">Correct?</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for answer in answers %}
+                        <tr
+                            class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b border-sky-900 dark:border-gray-700">
+                            <td class="px-6 py-4">{{ answer.question.question }} {% if answer.question.image %}<span> <img
+                                src="{{ answer.question.image.url }}" alt=""></span>{% endif %} </td>
+                            <td class="px-6 py-4">{% if answer.response.image %}<img src="{{ answer.response.image.url }}"
+                                                                                     alt="">{% else %}{{ answer.response.text }}{% endif %}</td>
+                            <td class="px-6 py-4">{% if answer.question.answer.image %}<img
+                                src="{{ answer.question.answer.image.url }}"
+                                alt="">{% else %}{{ answer.question.answer.text }}{% endif %}</td>
+                            <td class="px-6 py-4">
+                                {% if answer.is_correct %}
+                                    ✅
+                                {% else %}
+                                    ❌
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% endif %}
 
 {% endblock %}
