@@ -59,3 +59,8 @@ dependencies = [
     "wcwidth==0.2.13",
     "whitenoise==6.8.2",
 ]
+
+[dependency-groups]
+dev = [
+    "djhtml>=3.0.7",
+]

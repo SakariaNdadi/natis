@@ -475,6 +475,11 @@ dependencies = [
     { name = "whitenoise" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "djhtml" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "amqp", specifier = "==5.3.1" },
@@ -531,6 +536,9 @@ requires-dist = [
     { name = "wcwidth", specifier = "==0.2.13" },
     { name = "whitenoise", specifier = "==6.8.2" },
 ]
+
+[package.metadata.requires-dev]
+dev = [{ name = "djhtml", specifier = ">=3.0.7" }]
 
 [[package]]
 name = "packaging"
