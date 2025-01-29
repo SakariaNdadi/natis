@@ -13,11 +13,12 @@
         <script src="{% static 'js/alpine.focus.js' %}" defer></script>
         <script src="{% static 'js/alpine.js' %}" defer></script>
         <script src="{% static 'js/htmx.js' %}"></script>
-    <!-- <script src="{% static 'js/tailwind.js' %}"></script> -->
+        <script src="{% static 'js/tailwind.js' %}"></script>
     </head>
 
-    <body class="bg-white dark:bg-gray-800 text-sm md:text-base dark:text-gray-400">
+    <body class="bg-white dark:bg-gray-800 text-sm md:text-base dark:text-gray-400 h-svh">
         {% include 'includes/navbar.html' %}
+        {% include 'announcements/list.html' %}
 
         <main id="content" class="p-10">{% block content %}{% endblock content %}</main>
 

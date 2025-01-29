@@ -1,0 +1,5 @@
+{% if announcements %}
+    {% for announcement in announcements %}
+        {% include 'announcements/detail.html' %}
+    {% endfor %}
+{% endif %}

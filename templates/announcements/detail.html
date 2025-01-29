@@ -1,0 +1,23 @@
+<div class="flex items-center p-4 mb-4 text-sm {% if announcement.a_type == 'INFO' %} text-blue-800 bg-blue-50 dark:text-blue-400 {% elif announcement.a_type == 'DANGER' %} text-red-800 bg-red-50 dark:text-red-400 {% elif announcement.a_type == 'WARNING' %} text-yellow-800 bg-yellow-50 dark:text-yellow-300 {% endif %} dark:bg-gray-800"
+     role="alert">
+
+    <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+         fill="currentColor" viewBox="0 0 20 20">
+        {% if announcement.a_type == 'INFO' %}
+            <path
+                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+
+        {% elif announcement.a_type == 'DANGER' or announcement.a_type == 'WARNING' %}
+            <path
+                d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z" />
+        {% endif %}
+    </svg>
+
+    <span class="sr-only">{% if announcement.a_type == 'INFO' %} Info {% elif announcement.a_type == 'DANGER' %} Danger
+    {% elif announcement.a_type == 'WARNING' %} Warning {% endif %}</span>
+    <div>
+        <span class="font-medium">{% if announcement.a_type == 'INFO' %} Info alert!
+        {% elif announcement.a_type == 'DANGER' %} Danger alert! {% elif announcement.a_type == 'WARNING' %} Warning
+            alert! {% endif %}</span> {{ announcement.text }}
+    </div>
+</div>

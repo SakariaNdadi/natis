@@ -1,3 +1,5 @@
+from google.oauth2 import service_account
+
 from config.env import env
 
 from .base import *
@@ -48,3 +50,14 @@ CACHES = {
 # SESSION_COOKIE_SECURE = True
 # SECURE_SSL_REDIRECT = True
 X_FRAME_OPTIONS = "DENY"
+
+# Google cloud storage
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    os.path.join(BASE_DIR, "credentials.json")
+)
+GS_BUCKET_NAME = env("GS_BUCKET_NAME")
+GS_PROJECT_ID = env("GS_PROJECT_ID")
+STORAGES["default"] = {
+    "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
+}
+MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/media/"
