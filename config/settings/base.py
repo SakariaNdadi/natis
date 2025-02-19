@@ -1,6 +1,5 @@
 import os
 
-
 from config.env import BASE_DIR, env
 
 # SECURITY WARNING: keep the secret key used in production secret!
