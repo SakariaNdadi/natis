@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "apps.exam",
     "apps.pages",
     "apps.notifications",
+    "apps.fine",
 ]
 
 MIDDLEWARE = [
