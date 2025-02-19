@@ -5,6 +5,9 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name_plural = "categories"
 
 class Fine(models.Model):
     category = models.ForeignKey(Category, related_name="fines", on_delete=models.PROTECT)
