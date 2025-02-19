@@ -16,7 +16,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # third party
-    "django_browser_reload",
     "django_cotton",
     "simple_history",
     "allauth",
@@ -40,7 +39,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "django_browser_reload.middleware.BrowserReloadMiddleware",  # django-browser-reload
     "simple_history.middleware.HistoryRequestMiddleware",  # django-simple-history
     "allauth.account.middleware.AccountMiddleware",  # allauth
 ]
