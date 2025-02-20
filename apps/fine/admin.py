@@ -2,5 +2,11 @@ from django.contrib import admin
 
 from .models import Category, Fine
 
-admin.site.register(Category)
-admin.site.register(Fine)
+class FineInline(admin.StackedInline):
+    model = Fine
+
+class CategoryAdmin(admin.ModelAdmin):
+    model = Category
+    inlines = (FineInline,)
+
+admin.site.register(Category, CategoryAdmin)
