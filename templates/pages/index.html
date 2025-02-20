@@ -1,5 +1,18 @@
 {% extends '_base.html' %}
+{% load static %}
 {% block title %}NatisMock{% endblock title %}
+
+{% block extracss %}
+    <link rel="stylesheet" href="{% static 'css/datatables.css' %}" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+{% endblock extracss %}
+
+
+{% block extrajs %}
+    <script src="{% static 'js/charts.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+{% endblock extrajs %}
 
 {% block content %}
 
@@ -72,6 +85,60 @@
         </ol>
     </div>
 
+<!-- Tickets -->
+    <div class="overflow-x-scroll md:block mt-10">
+        <table id="myTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-lg uppercase bg-yellow-500 dark:bg-gray-700 text-white">
+                <tr>
+                    <th scope="col" class="px-6 py-3">Category</th>
+                    <th scope="col" class="px-6 py-3">SEC/REG</th>
+                    <th scope="col" class="px-6 py-3">Code</th>
+                    <th scope="col" class="px-6 py-3">Description</th>
+                    <th scope="col" class="px-6 py-3">Fine (N$)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fine in fines %}
+                    <tr
+                        class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b border-sky-900 dark:border-gray-700">
+                        <td class="px-6 py-4">{{ fine.category }}</td>
+                        <td class="px-6 py-4"></td>
+                        <td class="px-6 py-4">{{ fine.code }}</td>
+                        <td class="px-6 py-4">{{ fine.description }}</td>
+                        <td class="px-6 py-4">{{ fine.fine }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+<!-- Tickets End -->
+
 
 
 {% endblock content %}
+
+{% block scripts %}
+    <script>
+        let table = new DataTable('#myTable', {
+            searching: true,
+            pageLength: 10,
+            lengthChange: false,
+            stateSave: true,
+
+            columnDefs: [
+                {
+                    target: 1,
+                // visible: false,
+                // sortable: false,
+                    searchable: false
+                },
+                {
+                    target: 3,
+                // visible: false,
+                    sortable: false,
+                // searchable: false
+                },
+            ]
+        });
+    </script>
+{% endblock scripts %}
