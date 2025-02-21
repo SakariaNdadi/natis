@@ -2,17 +2,6 @@
 {% load static %}
 {% block title %}NatisMock{% endblock title %}
 
-{% block extracss %}
-    <link rel="stylesheet" href="{% static 'css/datatables.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/dataTables.min.css' %}">
-{% endblock extracss %}
-
-
-{% block extrajs %}
-    <script src="{% static 'js/charts.js' %}"></script>
-    <script src="{% static 'js/dataTables.min.js' %}"></script>
-{% endblock extrajs %}
-
 {% block content %}
 
     <main class="hidden xl:relative xl:min-h-5/6 xl:flex xl:flex-col xl:justify-between xl:overflow-hidden">
@@ -84,69 +73,14 @@
         </ol>
     </div>
 
-<!-- Tickets -->
-    <div class="overflow-x-scroll md:block mt-10">
-        <table id="myTable" class="display nowrap w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-lg uppercase bg-yellow-500 dark:bg-gray-700 text-white">
-                <tr>
-                    <th scope="col" class="px-6 py-3">Category</th>
-                    <th scope="col" class="px-6 py-3">SEC/REG</th>
-                    <th scope="col" class="px-6 py-3">Code</th>
-                    <th scope="col" class="px-6 py-3">Description</th>
-                    <th scope="col" class="px-6 py-3">Fine (N$)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for fine in fines %}
-                    <tr
-                        class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b border-sky-900 dark:border-gray-700">
-                        <td class="px-6 py-4">{{ fine.category }}</td>
-                        <td class="px-6 py-4"></td>
-                        <td class="px-6 py-4">{{ fine.code }}</td>
-                        <td class="px-6 py-4">{{ fine.description }}</td>
-                        <td class="px-6 py-4">{{ fine.fine }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-<!-- Tickets End -->
+<!-- Tickets table -->
+    {% include 'fine/table.html' %}
+<!-- Tickets table End -->
 
 
 
 {% endblock content %}
 
 {% block scripts %}
-    <script>
-        let table = new DataTable('#myTable', {
-            searching: true,
-            pageLength: 10,
-            lengthChange: false,
-            stateSave: true,
-            scrollCollapse: true,
-            scroller: true,
-            scrollY: 200,
 
-            order: [[0, 'asc']],
-            rowGroup: {
-                dataSrc: 0
-            },
-
-            columnDefs: [
-                {
-                    target: 1,
-                // visible: false,
-                // sortable: false,
-                    searchable: false
-                },
-                {
-                    target: 3,
-                // visible: false,
-                    sortable: false,
-                // searchable: false
-                },
-            ]
-        });
-
-    </script>
 {% endblock scripts %}

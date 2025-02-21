@@ -1,0 +1,111 @@
+{% load static %}
+{% block extracss %}
+    <link rel="stylesheet" href="{% static 'css/datatables.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/dataTables.min.css' %}">
+{% endblock extracss %}
+
+
+{% block extrajs %}
+    <script src="{% static 'js/charts.js' %}"></script>
+    <script src="{% static 'js/dataTables.min.js' %}"></script>
+{% endblock extrajs %}
+
+<div class="overflow-x-scroll md:block mt-10">
+    <fieldset>
+        <div class="inline-flex items-center pl-5">
+            <span class="size-2 inline-block bg-red-500 rounded-full me-2 dark:bg-red-500"></span>
+            <span class="text-gray-600 dark:text-neutral-400">If your fine is <u class="font-black">NAOG</u> You're
+                going to jail
+                bossa</span>
+        </div>
+    </fieldset>
+    <table id="myTable" class="display nowrap w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-lg uppercase bg-yellow-500 dark:bg-gray-700 text-white">
+            <tr>
+                <th scope="col" class="px-6 py-3">Description</th>
+                <th scope="col" class="px-6 py-3">Category</th>
+                <th scope="col" class="px-6 py-3">Code</th>
+                <th scope="col" class="px-6 py-3">Fine (N$)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fine in fines %}
+                <tr
+                    class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b border-sky-900 dark:border-gray-700">
+                    <td class="px-6 py-4">{{ fine.description }}</td>
+                    <td class="px-6 py-4">{{ fine.category }}</td>
+                    <td class="px-6 py-4">{{ fine.code }}</td>
+                    <td class="px-6 py-4">{{ fine.fine }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    let table = new DataTable('#myTable', {
+        searching: true,
+        pageLength: 100,
+        lengthChange: false,
+        stateSave: true,
+        scrollCollapse: true,
+        scroller: true,
+        scrollY: 200,
+        keys: true,
+        responsive: true,
+
+        order: [[1, 'asc']],
+        rowGroup: {
+            dataSrc: 1
+        },
+
+        responsive: {
+            details: {
+                display: DataTable.Responsive.display.modal({
+                    header: function (row) {
+                        let data = row.data();
+                        return ``;
+                    }
+                }),
+                renderer: function (api, rowIdx) {
+                    let data = api
+                        .columns()
+                        .indexes()
+                        .map(colIdx => {
+                            let column = api.column(colIdx);
+                            return `
+                                <tr class="border-b">
+                                    <td class="px-4 py-2 font-medium text-gray-700 font-black">${column.header().innerText}:</td>
+                                    <td class="px-4 py-2 text-gray-900">${api.cell(rowIdx, colIdx).data()}</td>
+                                </tr>
+                            `;
+                        })
+                        .join('');
+
+                    return `
+                        <div class="p-4 bg-white rounded-lg shadow-md">
+                            <table class="w-full border-collapse grid-col-1">${data}</table>
+                        </div>
+                    `;
+                }
+            }
+        }
+        ,
+
+        columnDefs: [
+            {
+                target: 1,
+                // visible: false,
+                // sortable: false,
+                searchable: true
+            },
+            {
+                target: 3,
+                // visible: false,
+                sortable: false,
+                // searchable: false
+            },
+        ]
+    });
+
+</script>
