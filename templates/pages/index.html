@@ -4,14 +4,13 @@
 
 {% block extracss %}
     <link rel="stylesheet" href="{% static 'css/datatables.css' %}" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="{% static 'css/dataTables.min.css' %}">
 {% endblock extracss %}
 
 
 {% block extrajs %}
     <script src="{% static 'js/charts.js' %}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="{% static 'js/dataTables.min.js' %}"></script>
 {% endblock extrajs %}
 
 {% block content %}
@@ -87,7 +86,7 @@
 
 <!-- Tickets -->
     <div class="overflow-x-scroll md:block mt-10">
-        <table id="myTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <table id="myTable" class="display nowrap w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-lg uppercase bg-yellow-500 dark:bg-gray-700 text-white">
                 <tr>
                     <th scope="col" class="px-6 py-3">Category</th>
@@ -124,6 +123,14 @@
             pageLength: 10,
             lengthChange: false,
             stateSave: true,
+            scrollCollapse: true,
+            scroller: true,
+            scrollY: 200,
+
+            order: [[0, 'asc']],
+            rowGroup: {
+                dataSrc: 0
+            },
 
             columnDefs: [
                 {
@@ -140,5 +147,6 @@
                 },
             ]
         });
+
     </script>
 {% endblock scripts %}

@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from .models import Category, Fine
 
+
 class FineInline(admin.StackedInline):
     model = Fine
 
