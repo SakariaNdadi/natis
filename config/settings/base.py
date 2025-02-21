@@ -1,6 +1,5 @@
 import os
 
-
 from config.env import BASE_DIR, env
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -17,7 +16,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # third party
-    "django_browser_reload",
     "django_cotton",
     "simple_history",
     "allauth",
@@ -29,6 +27,7 @@ INSTALLED_APPS = [
     "apps.exam",
     "apps.pages",
     "apps.notifications",
+    "apps.fine",
 ]
 
 MIDDLEWARE = [
@@ -40,7 +39,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "django_browser_reload.middleware.BrowserReloadMiddleware",  # django-browser-reload
     "simple_history.middleware.HistoryRequestMiddleware",  # django-simple-history
     "allauth.account.middleware.AccountMiddleware",  # allauth
 ]

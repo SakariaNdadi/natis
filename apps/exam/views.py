@@ -146,10 +146,9 @@ def take_exam(request, questionnaire_id) -> HttpResponse:
             form.save(session=exam_session)
             exam_session.save()
             return redirect("exam:review_exam", exam_session_id=exam_session.id)
-        else:
-            messages.error(
-                request, "There was an error with your submission. Please try again."
-            )
+        messages.error(
+            request, "There was an error with your submission. Please try again."
+        )
     else:
         form = TakeExamForm(questions)
     time_left = max(
@@ -184,8 +183,7 @@ def mark_exam_complete(request, exam_session_id) -> JsonResponse:
                 {"redirect_url": reverse("exam:exam_result", args=[exam_session_id])}
             )
 
-        else:
-            return JsonResponse({"errors": form.errors}, status=400)
+        return JsonResponse({"errors": form.errors}, status=400)
 
     return JsonResponse({"error": "Invalid request method."}, status=400)
 
@@ -266,7 +264,7 @@ def exam_result(request, exam_session_id) -> HttpResponse:
 
 
 @login_required
-def delete_exam_session(request, exam_session_id) -> HttpResponse:
+def delete_exam_session(request, exam_session_id):
     exam_session = get_object_or_404(ExamSession, id=exam_session_id)
     user_answers = exam_session.answers.all()
 
