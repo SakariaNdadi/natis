@@ -2,6 +2,17 @@
 {% load static %}
 {% block title %}NatisMock{% endblock title %}
 
+
+{% block extracss %}
+    <link rel="stylesheet" href="{% static 'css/datatables.min.css' %}">
+{% endblock extracss %}
+
+
+{% block extrajs %}
+    <script src="{% static 'js/charts.js' %}"></script>
+    <script src="{% static 'js/datatables.min.js' %}"></script>
+{% endblock extrajs %}
+
 {% block content %}
 
     <main class="hidden xl:relative xl:min-h-5/6 xl:flex xl:flex-col xl:justify-between xl:overflow-hidden">
