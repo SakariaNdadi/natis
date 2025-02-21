@@ -1,0 +1,928 @@
+[
+{
+  "model": "fine.category",
+  "pk": 1,
+  "fields": {
+    "name": "abandoned vehicles"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 2,
+  "fields": {
+    "name": "accidents"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 3,
+  "fields": {
+    "name": "animals"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 4,
+  "fields": {
+    "name": "animal drawn vehicles"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 5,
+  "fields": {
+    "name": "brakes"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 6,
+  "fields": {
+    "name": "cellular phones/communication device"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 7,
+  "fields": {
+    "name": "compel to stop"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 8,
+  "fields": {
+    "name": "conveying of goods/passengers"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 9,
+  "fields": {
+    "name": "convoys"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 10,
+  "fields": {
+    "name": "cross border road transportation"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 11,
+  "fields": {
+    "name": "dangerous goods"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 12,
+  "fields": {
+    "name": "damaging of roads"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 13,
+  "fields": {
+    "name": "distinguished sign"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 14,
+  "fields": {
+    "name": "drink and drive"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 15,
+  "fields": {
+    "name": "duties of a driver"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 16,
+  "fields": {
+    "name": "duties - license inspector"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 17,
+  "fields": {
+    "name": "duties - road transport inspector"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 18,
+  "fields": {
+    "name": "duties - vehicle examiner"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 19,
+  "fields": {
+    "name": "duties - traffic officer / peace officer"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 20,
+  "fields": {
+    "name": "emergency wanring signs"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 21,
+  "fields": {
+    "name": "engine not covered"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 22,
+  "fields": {
+    "name": "entrances and exits"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 23,
+  "fields": {
+    "name": "exhaust / silencer systems"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 24,
+  "fields": {
+    "name": "false documents"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 25,
+  "fields": {
+    "name": "false information"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 26,
+  "fields": {
+    "name": "fitness of drivers"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 27,
+  "fields": {
+    "name": "funeral vehicular procession"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 28,
+  "fields": {
+    "name": "fuel tank, electrical wiring etc"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 29,
+  "fields": {
+    "name": "freeways - special provisions"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 30,
+  "fields": {
+    "name": "general speed limit - max speed 20km/h"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 31,
+  "fields": {
+    "name": "general speed limit - max speed 30km/h"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 32,
+  "fields": {
+    "name": "general speed limit - max speed 40km/h"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 33,
+  "fields": {
+    "name": "general speed limit - max speed 50km/h"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 34,
+  "fields": {
+    "name": "general speed limit - max speed 60km/h"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 35,
+  "fields": {
+    "name": "general speed limit - max speed 70km/h"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 36,
+  "fields": {
+    "name": "general speed limit - max speed 80km/h"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 37,
+  "fields": {
+    "name": "general speed limit - max speed 90km/h"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 38,
+  "fields": {
+    "name": "general speed limit - max speed 100km/h"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 39,
+  "fields": {
+    "name": "general speed limit - max speed 110km/h"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 40,
+  "fields": {
+    "name": "general speed limit - max speed 120km/h"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 41,
+  "fields": {
+    "name": "goods vehicle combination - max speed 80km/h"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 42,
+  "fields": {
+    "name": "bus / minibus - max speed 100km/h"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 43,
+  "fields": {
+    "name": "speed detectors, jammers and similar deveices"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 44,
+  "fields": {
+    "name": "illegal acts with vehicles"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 45,
+  "fields": {
+    "name": "restriction on combination of motor vehicles"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 46,
+  "fields": {
+    "name": "inconsiderate driving"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 47,
+  "fields": {
+    "name": "indicators - direction"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 48,
+  "fields": {
+    "name": "information plates"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 49,
+  "fields": {
+    "name": "lamps"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 50,
+  "fields": {
+    "name": "licensing and registration - vehicles"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 51,
+  "fields": {
+    "name": "locomotives"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 52,
+  "fields": {
+    "name": "loads on vehicles"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 53,
+  "fields": {
+    "name": "load sound amplification system - excessive noise"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 54,
+  "fields": {
+    "name": "minibus / bus"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 55,
+  "fields": {
+    "name": "motorcade"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 56,
+  "fields": {
+    "name": "motorcycles"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 57,
+  "fields": {
+    "name": "motor trade numbers"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 58,
+  "fields": {
+    "name": "number plates"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 59,
+  "fields": {
+    "name": "operator"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 60,
+  "fields": {
+    "name": "overall - height"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 61,
+  "fields": {
+    "name": "overall - length"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 62,
+  "fields": {
+    "name": "overall - width"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 63,
+  "fields": {
+    "name": "overhang - front"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 64,
+  "fields": {
+    "name": "overhang - rear"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 65,
+  "fields": {
+    "name": "overtaking"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 66,
+  "fields": {
+    "name": "parking - no parking sign"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 67,
+  "fields": {
+    "name": "parking - parked a vehicle"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 68,
+  "fields": {
+    "name": "parking - contravention of an exclusive parking marking bay"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 69,
+  "fields": {
+    "name": "pedal cycles"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 70,
+  "fields": {
+    "name": "pedestrians"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 71,
+  "fields": {
+    "name": "proceed before signalled"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 72,
+  "fields": {
+    "name": "projections"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 73,
+  "fields": {
+    "name": "protective - helmets"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 74,
+  "fields": {
+    "name": "professional authorisation"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 75,
+  "fields": {
+    "name": "races and sports"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 76,
+  "fields": {
+    "name": "rear underrun protection device"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 77,
+  "fields": {
+    "name": "reckless or negligent driving"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 78,
+  "fields": {
+    "name": "reflectors"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 79,
+  "fields": {
+    "name": "yellow retro-reflective material"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 80,
+  "fields": {
+    "name": "refuse name and address"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 81,
+  "fields": {
+    "name": "road traffic signs"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 82,
+  "fields": {
+    "name": "road traffic signs - failed to comply with the direction of a road traffic sign"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 83,
+  "fields": {
+    "name": "roadworthiness"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 84,
+  "fields": {
+    "name": "rules of the road"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 85,
+  "fields": {
+    "name": "school bus"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 86,
+  "fields": {
+    "name": "seatbelts"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 87,
+  "fields": {
+    "name": "sounding device"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 88,
+  "fields": {
+    "name": "special / temporary permits"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 89,
+  "fields": {
+    "name": "special vehicles (abnormal vehicles)"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 90,
+  "fields": {
+    "name": "speedometer"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 91,
+  "fields": {
+    "name": "steering mechanisms"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 92,
+  "fields": {
+    "name": "stopping"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 93,
+  "fields": {
+    "name": "towing of vehicles"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 94,
+  "fields": {
+    "name": "trading"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 95,
+  "fields": {
+    "name": "turning"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 96,
+  "fields": {
+    "name": "turning radius"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 97,
+  "fields": {
+    "name": "tyres"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 98,
+  "fields": {
+    "name": "vehicle - reverse / forward"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 99,
+  "fields": {
+    "name": "view - driver"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 100,
+  "fields": {
+    "name": "wheel base"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 101,
+  "fields": {
+    "name": "wheel flaps"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 102,
+  "fields": {
+    "name": "willfully hindered / obstructed traffic"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 103,
+  "fields": {
+    "name": "windscreen, glass etc"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 104,
+  "fields": {
+    "name": "schedule 3 - motor dealers licenses"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 105,
+  "fields": {
+    "name": "road transportation - passengers road transportation act, 74/1977"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 106,
+  "fields": {
+    "name": "operated a minibus, bus, tractor, or goods vehicle fitted with pneumatic tyres whilst whilst the permissible maximum axle mass load was exceeded with"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 107,
+  "fields": {
+    "name": "operated a minibus, bus, tractor, or goods vehicle fitted with pneumatic tyres whilst whilst the permissible maximum axle unit mass load was exceeded"
+  }
+},
+{
+  "model": "fine.category",
+  "pk": 108,
+  "fields": {
+    "name": "operated a combination of vehicles where the drawing vehicle is a minibus, bus, tractor, or goods vehicle fitted with pneumatic tyres whilst the permissible maximum combination mass of the combination was exceeded"
+  }
+},
+{
+  "model": "fine.fine",
+  "pk": 1,
+  "fields": {
+    "category": 1,
+    "code": 64876,
+    "description": "Left a vehicle in same place on a public road outside an urban area for more than 24 hours",
+    "fine": "500"
+  }
+},
+{
+  "model": "fine.fine",
+  "pk": 2,
+  "fields": {
+    "category": 1,
+    "code": 64892,
+    "description": "Left a vehicle in same place on a public road within an urban area for more than seven days",
+    "fine": "500"
+  }
+},
+{
+  "model": "fine.fine",
+  "pk": 3,
+  "fields": {
+    "category": 1,
+    "code": 64893,
+    "description": "Left a vehicle in same place on the site of any vehicle testing station for more than seven days",
+    "fine": "500"
+  }
+},
+{
+  "model": "fine.fine",
+  "pk": 4,
+  "fields": {
+    "category": 1,
+    "code": 64894,
+    "description": "Left a vehicle in same place on a public road for a continuous period area for more than seven days",
+    "fine": "500"
+  }
+},
+{
+  "model": "fine.fine",
+  "pk": 5,
+  "fields": {
+    "category": 2,
+    "code": 40105,
+    "description": "Failed to stop vehicle immediately after an accident in which a person was killed/injured or suffered damage of property or animal.",
+    "fine": "NAOG"
+  }
+},
+{
+  "model": "fine.fine",
+  "pk": 6,
+  "fields": {
+    "category": 2,
+    "code": 40106,
+    "description": "Failed to ascertain nature and extent of injuries sustained by any person after accident.",
+    "fine": "NAOG"
+  }
+},
+{
+  "model": "fine.fine",
+  "pk": 7,
+  "fields": {
+    "category": 2,
+    "code": 40107,
+    "description": "Failed to render assistance to injured person after accident.",
+    "fine": "NAOG"
+  }
+},
+{
+  "model": "fine.fine",
+  "pk": 8,
+  "fields": {
+    "category": 2,
+    "code": 40123,
+    "description": "Failed to ascertain nature and extent of damage sustained after accident.",
+    "fine": "NAOG"
+  }
+},
+{
+  "model": "fine.fine",
+  "pk": 9,
+  "fields": {
+    "category": 2,
+    "code": 40149,
+    "description": "Failed to give name and address  to any person having reasonable grounds to required it at scene of accident.",
+    "fine": "NAOG"
+  }
+},
+{
+  "model": "fine.fine",
+  "pk": 10,
+  "fields": {
+    "category": 2,
+    "code": 64931,
+    "description": "Failed to give name and address of owner to any person having reasonable grounds to required it at scene of accident.",
+    "fine": "NAOG"
+  }
+},
+{
+  "model": "fine.fine",
+  "pk": 11,
+  "fields": {
+    "category": 2,
+    "code": 64957,
+    "description": "Failed to give license mark and number or similar mark and number of motor vehicle to any person having reasonable grounds to required at scene of accident.",
+    "fine": "NAOG"
+  }
+},
+{
+  "model": "fine.fine",
+  "pk": 12,
+  "fields": {
+    "category": 2,
+    "code": 40165,
+    "description": "Failed to report accident within 24 hours after the occurrence thereof at any police station or any office of a traffic officer.",
+    "fine": "NAOG"
+  }
+},
+{
+  "model": "fine.fine",
+  "pk": 13,
+  "fields": {
+    "category": 2,
+    "code": 40181,
+    "description": "Took intoxicating liquor or drug having a narcotic effect after an accident.",
+    "fine": "NAOG"
+  }
+},
+{
+  "model": "fine.fine",
+  "pk": 14,
+  "fields": {
+    "category": 2,
+    "code": 64973,
+    "description": "Took intoxicating liquor or drug having a narcotic effect before he/she complied with the request of a traffic officer to provide a specimen of breath or to submit to the taking of a specimen of his/her blood after an accident.",
+    "fine": "NAOG"
+  }
+},
+{
+  "model": "fine.fine",
+  "pk": 15,
+  "fields": {
+    "category": 2,
+    "code": 40204,
+    "description": "Removed vehicle from position where it came to rest after an accident - person killed or injured.",
+    "fine": "NOAG"
+  }
+},
+{
+  "model": "fine.fine",
+  "pk": 16,
+  "fields": {
+    "category": 2,
+    "code": 40238,
+    "description": "Removed vehicle from the scene of an accident without permission of owner/driver/operator/lawful possessor.",
+    "fine": "NOAG"
+  }
+},
+{
+  "model": "fine.fine",
+  "pk": 17,
+  "fields": {
+    "category": 2,
+    "code": 40246,
+    "description": "Failing as garage owner to keep a record of motor vehicle involved in an accident for three years and to produce it on request.",
+    "fine": "750"
+  }
+}
+]
